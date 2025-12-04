@@ -1,6 +1,9 @@
 # Session state (users should not commit their session state)
 docs/CLAUDE/SESSION-STATE.json
 
+# Local Claude Code settings (user-specific permissions)
+.claude/settings.local.json
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -1,0 +1,63 @@
+{
+  "_comment": "Copy this file to settings.local.json and customize for your workflow",
+  "_docs": "https://docs.anthropic.com/en/docs/claude-code",
+
+  "permissions": {
+    "allow": [
+      "_comment: Add commands you want Claude to run without asking",
+      "_comment: Examples for different tech stacks below - uncomment what you need",
+
+      "_comment: === Git (safe read operations) ===",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+
+      "_comment: === Node.js / JavaScript ===",
+      "_Bash(npm test:*)",
+      "_Bash(npm run build:*)",
+      "_Bash(npm run lint:*)",
+      "_Bash(npx prettier:*)",
+      "_Bash(yarn test:*)",
+
+      "_comment: === Python ===",
+      "_Bash(pytest:*)",
+      "_Bash(python -m pytest:*)",
+      "_Bash(pip install:*)",
+      "_Bash(ruff check:*)",
+      "_Bash(black:*)",
+
+      "_comment: === .NET ===",
+      "_Bash(dotnet build:*)",
+      "_Bash(dotnet test:*)",
+      "_Bash(dotnet run:*)",
+      "_Bash(dotnet ef migrations:*)",
+
+      "_comment: === Rust ===",
+      "_Bash(cargo build:*)",
+      "_Bash(cargo test:*)",
+      "_Bash(cargo clippy:*)",
+
+      "_comment: === Go ===",
+      "_Bash(go build:*)",
+      "_Bash(go test:*)",
+      "_Bash(go run:*)",
+
+      "_comment: === Docker ===",
+      "_Bash(docker build:*)",
+      "_Bash(docker compose up:*)",
+      "_Bash(docker ps:*)",
+
+      "_comment: === General ===",
+      "_Bash(make:*)",
+      "_Bash(curl:*)"
+    ],
+
+    "deny": [
+      "_comment: Commands that should always be blocked",
+      "_comment: Add dangerous commands for your environment here",
+      "_Bash(rm -rf /)",
+      "_Bash(sudo rm:*)"
+    ]
+  }
+}

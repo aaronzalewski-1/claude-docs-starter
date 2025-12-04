@@ -16,7 +16,7 @@ Claude Code works best when it has structured context about your project. This d
 1. Copy to your project root:
    - `CLAUDE.md` file
    - `docs/CLAUDE/` folder
-   - `.claude/commands/` folder (for slash commands)
+   - `.claude/` folder (commands, settings templates, hooks)
 2. Find and replace all `{{PLACEHOLDER}}` markers with your project values
 3. Fill in project-specific sections (architecture, API endpoints, etc.)
 4. Commit the docs to your repository
@@ -54,10 +54,14 @@ Use find-and-replace to customize these placeholders:
 your-project/
 ├── CLAUDE.md                    # Entry point - always read first
 ├── .claude/
-│   └── commands/                # Custom slash commands
-│       ├── DEEPPLAN.md          # /DEEPPLAN - Structured implementation workflow
-│       ├── REFOCUS.md           # /REFOCUS - Debug reset protocol
-│       └── NEXTSTEPS.md         # /NEXTSTEPS - Sprint planning assistant
+│   ├── commands/                # Custom slash commands
+│   │   ├── DEEPPLAN.md          # /DEEPPLAN - Structured implementation workflow
+│   │   ├── REFOCUS.md           # /REFOCUS - Debug reset protocol
+│   │   └── NEXTSTEPS.md         # /NEXTSTEPS - Sprint planning assistant
+│   ├── CREATING-COMMANDS.md     # Guide: How to create your own commands
+│   ├── settings.template.json   # Template: Auto-approve permissions
+│   ├── hooks.template.json      # Template: Pre/post tool hooks
+│   └── README.md                # Explains the .claude folder
 └── docs/
     └── CLAUDE/
         ├── DEVELOPMENT.md       # How to work on this project
@@ -114,6 +118,19 @@ Three ready-to-use commands in `.claude/commands/`:
 | `/NEXTSTEPS` | Planning next sprint | Analyzes roadmap, suggests prioritized tasks based on dependencies and value |
 
 **Usage:** Type the command (e.g., `/DEEPPLAN`) in Claude Code to invoke the workflow.
+
+**Create your own:** See [.claude/CREATING-COMMANDS.md](.claude/CREATING-COMMANDS.md) for a guide on writing custom commands.
+
+### Settings & Hooks Templates
+
+Configure Claude Code behavior with the included templates:
+
+| Template | Purpose |
+|----------|---------|
+| `settings.template.json` | Auto-approve common commands (build, test, lint) so Claude doesn't ask every time |
+| `hooks.template.json` | Run scripts before/after tool calls (auto-format, notifications) |
+
+**Setup:** Copy `settings.template.json` to `settings.local.json`, uncomment the commands for your tech stack, and customize.
 
 ## Tips for Success
 
