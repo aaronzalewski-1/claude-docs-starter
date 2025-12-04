@@ -13,7 +13,10 @@ Claude Code works best when it has structured context about your project. This d
 
 ## Quick Start
 
-1. Copy the `CLAUDE.md` file and `docs/CLAUDE/` folder to your project root
+1. Copy to your project root:
+   - `CLAUDE.md` file
+   - `docs/CLAUDE/` folder
+   - `.claude/commands/` folder (for slash commands)
 2. Find and replace all `{{PLACEHOLDER}}` markers with your project values
 3. Fill in project-specific sections (architecture, API endpoints, etc.)
 4. Commit the docs to your repository
@@ -50,6 +53,11 @@ Use find-and-replace to customize these placeholders:
 ```
 your-project/
 ├── CLAUDE.md                    # Entry point - always read first
+├── .claude/
+│   └── commands/                # Custom slash commands
+│       ├── DEEPPLAN.md          # /DEEPPLAN - Structured implementation workflow
+│       ├── REFOCUS.md           # /REFOCUS - Debug reset protocol
+│       └── NEXTSTEPS.md         # /NEXTSTEPS - Sprint planning assistant
 └── docs/
     └── CLAUDE/
         ├── DEVELOPMENT.md       # How to work on this project
@@ -94,6 +102,18 @@ Pre-built checklists for common workflows:
 - Architectural analysis (5 steps)
 - Debugging integration tests (8 steps)
 - Pre-commit verification
+
+### Custom Slash Commands
+
+Three ready-to-use commands in `.claude/commands/`:
+
+| Command | When to Use | What It Does |
+|---------|-------------|--------------|
+| `/DEEPPLAN` | Starting a multi-step feature | Enters plan mode, loads context, creates phased implementation plan with commits |
+| `/REFOCUS` | Debugging spirals or gets stuck | Stops, re-reads debugging guidance, produces evidence-based revised approach |
+| `/NEXTSTEPS` | Planning next sprint | Analyzes roadmap, suggests prioritized tasks based on dependencies and value |
+
+**Usage:** Type the command (e.g., `/DEEPPLAN`) in Claude Code to invoke the workflow.
 
 ## Tips for Success
 
