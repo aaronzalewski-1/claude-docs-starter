@@ -1,0 +1,50 @@
+{
+  "_comment": "Use this template to track state across multi-session work. Copy to SESSION-STATE.json when starting complex work.",
+  "version": "1.0",
+  "lastUpdated": "YYYY-MM-DDTHH:MM:SSZ",
+  "activeTask": {
+    "title": "Task title",
+    "description": "What you're trying to accomplish",
+    "startedDate": "YYYY-MM-DDTHH:MM:SSZ",
+    "status": "in_progress | blocked | paused",
+    "blockers": []
+  },
+  "completedSteps": [
+    {
+      "step": "Description of completed step",
+      "completedDate": "YYYY-MM-DDTHH:MM:SSZ",
+      "artifacts": ["List of files created/modified"]
+    }
+  ],
+  "nextSteps": [
+    "Next action to take",
+    "Following action"
+  ],
+  "context": {
+    "keyDecisions": [
+      {
+        "decision": "What was decided",
+        "rationale": "Why it was decided",
+        "date": "YYYY-MM-DDTHH:MM:SSZ"
+      }
+    ],
+    "openQuestions": [
+      "Questions that need answers"
+    ],
+    "assumptions": [
+      "Assumptions being made"
+    ]
+  },
+  "references": {
+    "relevantFiles": [
+      "path/to/important/file.cs"
+    ],
+    "relevantDocs": [
+      "Link to relevant documentation"
+    ],
+    "relatedCommits": [
+      "abc1234 - Commit message"
+    ]
+  },
+  "notes": "Free-form notes about the current state"
+}

@@ -1,0 +1,12 @@
+# Session state (users should not commit their session state)
+docs/CLAUDE/SESSION-STATE.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
