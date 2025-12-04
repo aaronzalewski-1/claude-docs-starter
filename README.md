@@ -1,6 +1,12 @@
 # CLAUDE Documentation Starter Kit
 
-A template structure for organizing [Claude Code](https://docs.anthropic.com/en/docs/claude-code) documentation in your projects. This starter kit provides a proven organizational pattern for maintaining project context that helps Claude Code work more effectively with your codebase.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Claude Code](https://img.shields.io/badge/Claude-Code-blueviolet)](https://docs.anthropic.com/en/docs/claude-code)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+
+> **Templates and patterns for AI-assisted development with Claude Code**
+
+A starter kit for organizing [Claude Code](https://docs.anthropic.com/en/docs/claude-code) documentation in your projects. Includes proven patterns for maintaining project context, custom slash commands, and operational checklists that help Claude work more effectively with your codebase.
 
 ## Why Use This?
 
