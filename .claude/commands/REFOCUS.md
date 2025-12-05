@@ -14,7 +14,7 @@
 
 Re-read these sections from [DEVELOPMENT.md](docs/CLAUDE/DEVELOPMENT.md):
 
-1. **Debugging Checklist** - The 8-step checklist for when tests fail
+1. **Debugging Checklist** - The 8-step checklist for when integration tests fail
 2. **Debugging Best Practices** - Detailed debugging methodology
 3. **Lessons Learned from Real Refactorings** - Past mistakes and their solutions
 

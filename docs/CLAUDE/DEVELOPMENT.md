@@ -66,6 +66,19 @@ When working with external APIs (Azure services, third-party APIs, etc.):
 4. Acknowledge uncertainty: "I should verify the API docs for..."
 5. Propose safe verification: GET requests first, then write operations
 
+### SQL Script Writing
+
+| Mistake | Why It Fails | Correct Approach |
+|---------|--------------|------------------|
+| Guessing table/column names | SQL errors for invalid object names | **Verify schema first** - check entity definitions |
+| Assuming all tables are in default schema | Tables may be in custom schemas | Check schema-qualified names in migrations |
+| Using plural/singular incorrectly | ORM may use different naming conventions | Check exact table names in DbContext or migrations |
+
+**Schema Verification Pattern:**
+1. Check entity/model definitions for table names
+2. Check migration files or schema snapshots for actual names
+3. Verify schema qualification (e.g., `SchemaName.TableName`)
+
 ### General Velocity Principles
 
 1. **Check environment first**: Consider shell context before running commands
@@ -174,6 +187,30 @@ public class Order
 - No premature optimization or generalization
 - Prefer editing existing files over creating new ones
 
+### 7. Asynchronous Programming
+- Use `async`/`await` consistently throughout call chains
+- Avoid `async void` - use `async Task` except for event handlers
+- All database operations should be async
+- Don't block async calls with `.Result` or `.Wait()`
+
+### 8. Data Access Patterns
+- Use `.AsNoTracking()` for read-only queries (improves performance)
+- Use explicit `.Include()` instead of lazy loading for predictable query behavior
+- Select only needed fields with `.Select()` projections
+- Avoid N+1 queries - verify generated SQL in development
+
+### 9. Error Handling Strategy
+- Global exception handling via middleware
+- Validation errors as structured 400 responses with specific field errors
+- Log all exceptions with context (userId, requestId, etc.)
+- Use Result pattern for expected failures, exceptions for exceptional cases
+
+### 10. Structured Logging
+- Use message templates with properties: `Log("User {UserId} completed {Action}", userId, action)`
+- Include correlation IDs for distributed tracing
+- Avoid string interpolation in log messages (breaks structured logging analysis)
+- Log levels: Debug (dev), Information (significant events), Warning (recoverable), Error (failures)
+
 ---
 
 ## Code Organization Principles
@@ -256,20 +293,76 @@ Use this format to document lessons learned:
 
 ### Example Case Studies
 
-<!-- These are placeholder examples. Replace with your own real experiences. -->
+<!-- Replace these with your own real experiences. These are common patterns to watch for. -->
 
-**Case Study 1: [Your First Lesson] ([Date])**
+**Case Study 1: External API Speculation Without Verification**
 
-**Context:** [Describe the situation]
+**Context:** Working with external API integrations.
 
-**The Mistake:** [What went wrong]
+**The Mistake:**
+1. ❌ Made claims about API behavior without checking documentation
+2. ❌ Attempted endpoint paths without reading existing client code
+3. ❌ Nearly caused issues by proposing operations without verification
 
-**Why It Was Wrong:** [Analysis]
+**Why It Was Wrong:**
+- Violated `<investigate_before_answering>` directive for external APIs
+- Speculation presented as fact reduces confidence in AI assistance
 
-**What Should Have Been Done:** [Correct approach]
+**What Should Have Been Done:**
+1. ✅ Read the HttpClient/API client implementation first
+2. ✅ Check vendor documentation before making claims
+3. ✅ Verify destructive operation behavior
+4. ✅ Acknowledge uncertainty: "I need to verify the API docs"
 
 **General Principles Derived:**
-1. [Key takeaway]
+1. External APIs require same investigation standards as internal code
+2. Never assume destructive behavior - verify before recommending
+3. Distinguish implementation from documentation
+4. Read existing API client implementations first
+
+---
+
+**Case Study 2: Migration Created But Not Applied**
+
+**Context:** Creating database migrations.
+
+**The Mistake:**
+1. ❌ Created migration file with migration tool
+2. ❌ Committed with message implying table existed
+3. ❌ **Never applied migration** - table was never created
+
+**Why It Was Wrong:**
+- Conflated migration creation with migration application
+- Misleading commit message
+- Build passes but runtime fails
+
+**What Should Have Been Done:**
+1. ✅ After creating migration, immediately apply it
+2. ✅ Verify output shows migrations were applied
+3. ✅ Confirm changes exist before committing
+4. ✅ Commit message should reflect reality
+
+**General Principles Derived:**
+1. **Migration Creation ≠ Migration Application**
+2. **Verify Database State, Not Just Build State**
+3. **Treat Plan Commands as Mandatory Checklist**
+4. **Commit Messages Must Reflect Reality**
+
+---
+
+## Intentional "Mocks" and Reference Data (Do NOT Remove)
+
+Some code patterns may appear to be "mock" or "test" data but are actually intentional.
+
+**Key Distinction:**
+- ❌ **Mock to remove**: Code returning fake results instead of calling real services
+- ✅ **Reference data**: Code seeding known/fixed categories from external systems without discovery APIs
+- ✅ **TODO markers**: Properly marked placeholders for pending features
+
+**When reviewing code that looks like "mock data":**
+1. Check if it's seeding reference data that doesn't change
+2. Check if the external system has an API to discover this data dynamically
+3. Check if it's marked as TODO (pending feature, not fake data)
 
 ---
 
@@ -291,6 +384,23 @@ Use this format to document lessons learned:
 - Read files before editing them (required by Edit tool)
 - Use Edit tool for modifications, not bash commands
 - Never create markdown/documentation files unless explicitly requested
+
+---
+
+## Database Migration Workflow
+
+1. Make entity changes in domain layer
+2. Update configurations/mappings if needed
+3. Generate migration: `{{MIGRATION_COMMAND}}`
+4. Review migration code for correctness
+5. **⚠️ CRITICAL - Apply migration**: Run the update command
+   - Creating a migration file is NOT the same as applying it
+   - Verify output shows migrations were applied (not "No migrations were applied")
+   - Confirm new tables/columns exist in database
+6. Test with seeded data
+7. Commit
+
+**Common Mistake**: Creating migration, seeing build succeed, and committing without applying. The database remains unchanged and runtime fails.
 
 ---
 

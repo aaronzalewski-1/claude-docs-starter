@@ -52,6 +52,8 @@ Use find-and-replace to customize these placeholders:
 | `docs/CLAUDE/API-REFERENCE.md` | Endpoint documentation | Your API endpoints and DTOs |
 | `docs/CLAUDE/CHANGELOG.md` | Version history | Track your releases and changes |
 | `docs/CLAUDE/ROADMAP.md` | Feature planning | Your milestones and planned work |
+| `docs/CLAUDE/IMPROVEMENTS.md` | Improvement proposals | Track refactoring ideas and their status |
+| `docs/CLAUDE/APPENDIX.md` | Supplementary reference | Process diagrams, seed data, glossary |
 | `docs/CLAUDE/SESSION-STATE.template.json` | Multi-session state tracking | Use as-is for complex multi-session work |
 
 ## Documentation Structure
@@ -75,6 +77,8 @@ your-project/
         ├── API-REFERENCE.md     # API endpoint details
         ├── CHANGELOG.md         # What changed and when
         ├── ROADMAP.md           # What's planned
+        ├── IMPROVEMENTS.md      # Improvement proposals and status
+        ├── APPENDIX.md          # Supplementary reference material
         └── SESSION-STATE.template.json
 ```
 
@@ -119,7 +123,7 @@ Three ready-to-use commands in `.claude/commands/`:
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/DEEPPLAN` | Starting a multi-step feature | Enters plan mode, loads context, creates phased implementation plan with commits |
+| `/DEEPPLAN` | Starting a multi-step feature | Presents plan for approval, loads context, creates phased implementation plan with commits |
 | `/REFOCUS` | Debugging spirals or gets stuck | Stops, re-reads debugging guidance, produces evidence-based revised approach |
 | `/NEXTSTEPS` | Planning next sprint | Analyzes roadmap, suggests prioritized tasks based on dependencies and value |
 
@@ -150,6 +154,8 @@ Configure Claude Code behavior with the included templates:
 
 5. **Don't over-document** - Focus on things Claude gets wrong or asks about repeatedly. Let code speak for itself where possible.
 
+6. **Use the Greenfield directive** - For new projects without production users, keep the `<greenfield_development>` section in CLAUDE.md. For established projects with backwards compatibility concerns, remove it.
+
 ## Contributing
 
 Found a pattern that works well? Open a PR to share improvements with the community.
@@ -160,4 +166,4 @@ MIT License - Use freely in your projects.
 
 ---
 
-*This starter kit was extracted from production documentation patterns that evolved over months of Claude Code usage.*
+*This starter kit was extracted from production documentation patterns that evolved over months of Claude Code usage. Some areas reflect my own judgment on best practices related to greenfield SaaS product development.*

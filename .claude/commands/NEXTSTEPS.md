@@ -14,7 +14,7 @@ Analyze the project roadmap and suggest actionable tasks for the next sprint.
 
 Verify the roadmap is up to date by checking:
 
-1. **Completed Items**: Are all recently completed features marked as done?
+1. **Completed Items**: Are all recently completed features marked as ✅?
 2. **Version Numbers**: Does the current version in docs match the latest work?
 3. **Planned Sprint**: Is there a defined next sprint with clear priorities?
 4. **Stale Items**: Are there any planned items that have been completed but not updated?

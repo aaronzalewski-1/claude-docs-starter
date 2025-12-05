@@ -1,7 +1,8 @@
 # Deep Planning Implementation Workflow
 
-## Step 1: Enter Plan Mode
-Use `EnterPlanMode` to establish planning context.
+## Step 1: Present Plan for Review
+Present the implementation plan as text in the conversation. Do NOT use the `EnterPlanMode` tool.
+After presenting the plan, ask "Ready to proceed?" and wait for explicit user confirmation before implementing.
 
 ## Step 2: Load Required Context
 **Read these files BEFORE asking any questions:**
@@ -28,15 +29,15 @@ Ask ONLY about:
 ## Step 4: Present Phased Implementation Plan
 Use this table format:
 
-| Phase | Objective | Files Affected | Tests | Commit Message |
-|-------|-----------|----------------|-------|----------------|
-| 1     | ...       | ...            | ...   | ...            |
-| 2     | ...       | ...            | ...   | ...            |
+| Phase | Objective | Files Affected | Integration Tests | Commit Message |
+|-------|-----------|----------------|-------------------|----------------|
+| 1     | ...       | ...            | ...               | ...            |
+| 2     | ...       | ...            | ...               | ...            |
 
 Include for each phase:
 - Clear, measurable objective
 - Specific files to create/modify
-- Test coverage plan
+- Integration test coverage
 - Descriptive commit message
 
 ## Step 5: Implementation Workflow
@@ -44,7 +45,7 @@ For each phase:
 
 1. **Create TodoWrite entries** for phase tasks
 2. **Implement** changes following DEVELOPMENT.md patterns
-3. **Write and run** tests
+3. **Write and run** integration tests
 4. **PAUSE** - Present changes for user review before commit
 5. **Commit** with the planned message after approval
 6. **Mark todos complete** and proceed to next phase
@@ -56,6 +57,7 @@ At completion, update these specific files:
 |------|-----------------|
 | **CHANGELOG.md** | Add version entry documenting changes |
 | **ROADMAP.md** | Move completed items to "Completed Milestones" |
+| **SESSION-STATE.json** | Clear or update (for multi-phase work only) |
 
 ## Recovery
 If debugging spirals or implementation gets stuck:
