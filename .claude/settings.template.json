@@ -6,6 +6,7 @@
     "allow": [
       "_comment: Add commands you want Claude to run without asking",
       "_comment: Examples for different tech stacks below - uncomment what you need",
+      "_comment: Remove the leading underscore to enable a command",
 
       "_comment: === Git (safe read operations) ===",
       "Bash(git status:*)",
@@ -13,51 +14,118 @@
       "Bash(git diff:*)",
       "Bash(git branch:*)",
 
+      "_comment: === Git (write operations - enable if you want auto-commits) ===",
+      "_Bash(git add:*)",
+      "_Bash(git commit:*)",
+      "_Bash(git push)",
+      "_Bash(git checkout:*)",
+      "_Bash(git stash:*)",
+
       "_comment: === Node.js / JavaScript ===",
       "_Bash(npm test:*)",
       "_Bash(npm run build:*)",
       "_Bash(npm run lint:*)",
+      "_Bash(npm run dev:*)",
       "_Bash(npx prettier:*)",
+      "_Bash(npx eslint:*)",
       "_Bash(yarn test:*)",
+      "_Bash(yarn build:*)",
+      "_Bash(pnpm test:*)",
+      "_Bash(pnpm build:*)",
 
       "_comment: === Python ===",
       "_Bash(pytest:*)",
       "_Bash(python -m pytest:*)",
       "_Bash(pip install:*)",
+      "_Bash(pip freeze:*)",
       "_Bash(ruff check:*)",
+      "_Bash(ruff format:*)",
       "_Bash(black:*)",
+      "_Bash(mypy:*)",
+      "_Bash(uv:*)",
 
       "_comment: === .NET ===",
       "_Bash(dotnet build:*)",
       "_Bash(dotnet test:*)",
       "_Bash(dotnet run:*)",
+      "_Bash(dotnet clean:*)",
+      "_Bash(dotnet restore:*)",
       "_Bash(dotnet ef migrations:*)",
+      "_Bash(dotnet ef database:*)",
+
+      "_comment: === .NET Code Analysis ===",
+      "_Bash(dotnet format:*)",
+      "_Bash(dotnet csharpier:*)",
+      "_Bash(csharpier:*)",
 
       "_comment: === Rust ===",
       "_Bash(cargo build:*)",
       "_Bash(cargo test:*)",
+      "_Bash(cargo run:*)",
       "_Bash(cargo clippy:*)",
+      "_Bash(cargo fmt:*)",
+      "_Bash(cargo check:*)",
 
       "_comment: === Go ===",
       "_Bash(go build:*)",
       "_Bash(go test:*)",
       "_Bash(go run:*)",
+      "_Bash(go fmt:*)",
+      "_Bash(go vet:*)",
+      "_Bash(go mod:*)",
 
       "_comment: === Docker ===",
       "_Bash(docker build:*)",
       "_Bash(docker compose up:*)",
+      "_Bash(docker compose down:*)",
       "_Bash(docker ps:*)",
+      "_Bash(docker logs:*)",
+
+      "_comment: === Database CLI Tools (CAUTION: can execute destructive SQL) ===",
+      "_comment: Consider enabling only for dev environments or read-only operations",
+      "_Bash(psql:*)",
+      "_Bash(sqlcmd:*)",
+      "_Bash(mysql:*)",
+      "_Bash(sqlite3:*)",
+      "_Bash(mongosh:*)",
+
+      "_comment: === PowerShell (Windows) - broad permissions, use with care ===",
+      "_Bash(powershell -Command:*)",
+      "_Bash(pwsh -Command:*)",
+
+      "_comment: === File Operations (use sparingly) ===",
+      "_Bash(mkdir:*)",
+      "_Bash(cp:*)",
+      "_Bash(mv:*)",
 
       "_comment: === General ===",
       "_Bash(make:*)",
-      "_Bash(curl:*)"
+      "_Bash(curl:*)",
+      "_Bash(wget:*)",
+      "_Bash(tree:*)",
+      "_Bash(du:*)",
+      "_Bash(wc:*)"
     ],
 
     "deny": [
       "_comment: Commands that should always be blocked",
       "_comment: Add dangerous commands for your environment here",
-      "_Bash(rm -rf /)",
-      "_Bash(sudo rm:*)"
+
+      "_comment: === Destructive file operations ===",
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo rm:*)",
+
+      "_comment: === Windows destructive commands ===",
+      "Bash(del /s /q:*)",
+      "Bash(format:*)",
+      "Bash(rd /s /q:*)",
+
+      "_comment: === Fork bomb and system attacks ===",
+      "Bash(:(){ :|:& };:)",
+
+      "_comment: Add project-specific dangerous commands below"
     ]
   }
 }

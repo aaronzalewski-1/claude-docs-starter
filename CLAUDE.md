@@ -21,6 +21,7 @@ The documentation is split into focused files for better organization and reduce
 | [ROADMAP.md](docs/CLAUDE/ROADMAP.md) | Completed milestones, planned features |
 | [IMPROVEMENTS.md](docs/CLAUDE/IMPROVEMENTS.md) | Improvement proposals, implementation status |
 | [APPENDIX.md](docs/CLAUDE/APPENDIX.md) | Process diagrams, seed data, glossary |
+| [CORE-LIBRARY.md](docs/CLAUDE/CORE-LIBRARY.md) | Library/SDK documentation (optional) |
 
 ---
 
@@ -100,6 +101,40 @@ Before modifying UI components:
 2. Check CSS/styling conventions
 3. Follow established state management patterns
 </load_frontend_context>
+
+<load_testing_context>
+Before writing or modifying tests:
+1. Check existing test patterns in test projects
+2. Review test naming conventions
+3. Understand test data setup patterns
+4. Check for shared fixtures or helpers
+</load_testing_context>
+
+<load_improvements_context>
+Before major architectural work or refactoring:
+1. Read [IMPROVEMENTS.md](docs/CLAUDE/IMPROVEMENTS.md) - check if this is already proposed
+2. Review related improvement proposals
+3. Check for dependencies between improvements
+4. Update proposal status as you work
+</load_improvements_context>
+
+<load_core_library_context>
+<!-- Use this if your project has a shared library or SDK component -->
+Before modifying shared library code:
+1. Read [CORE-LIBRARY.md](docs/CLAUDE/CORE-LIBRARY.md) if it exists
+2. Check locked architectural decisions
+3. Review public API surface - avoid breaking changes
+4. Ensure no infrastructure dependencies leak into library
+</load_core_library_context>
+
+<load_generation_context>
+<!-- Use this for projects with content/data generation features -->
+Before modifying content generation or data seeding:
+1. Review existing generation patterns
+2. Check seed data in [APPENDIX.md](docs/CLAUDE/APPENDIX.md)
+3. Understand domain terminology and constraints
+4. Test with representative sample data
+</load_generation_context>
 
 <!-- Add more context triggers as needed for your domain -->
 

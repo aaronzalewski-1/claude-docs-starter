@@ -1,31 +1,62 @@
 {
   "_comment": "Use this template to track state across multi-session work. Copy to SESSION-STATE.json when starting complex work.",
-  "version": "1.0",
+  "_usage": "Create via /DEEPPLAN workflow or manually. Claude checks this file at session start.",
+  "version": "2.0",
   "lastUpdated": "YYYY-MM-DDTHH:MM:SSZ",
+
   "activeTask": {
     "title": "Task title",
     "description": "What you're trying to accomplish",
+    "planFile": "docs/CLAUDE/PLAN-feature-name.md (if applicable)",
     "startedDate": "YYYY-MM-DDTHH:MM:SSZ",
-    "status": "in_progress | blocked | paused",
-    "blockers": []
+    "status": "in_progress | blocked | paused | awaiting_review",
+    "blockers": [],
+    "estimatedPhases": 3,
+    "currentPhase": 1
   },
+
+  "deepplanState": {
+    "_comment": "Tracks /DEEPPLAN workflow progress",
+    "workflowActive": false,
+    "currentStep": "context_loading | clarifying_questions | planning | implementation | documentation",
+    "phasedPlan": [
+      {
+        "phase": 1,
+        "objective": "Phase objective",
+        "status": "pending | in_progress | completed",
+        "filesAffected": [],
+        "commitMessage": "Planned commit message",
+        "completedDate": null
+      }
+    ],
+    "pendingDocUpdates": {
+      "changelog": false,
+      "roadmap": false,
+      "architecture": false
+    }
+  },
+
   "completedSteps": [
     {
       "step": "Description of completed step",
       "completedDate": "YYYY-MM-DDTHH:MM:SSZ",
-      "artifacts": ["List of files created/modified"]
+      "artifacts": ["List of files created/modified"],
+      "commitHash": "abc1234 (if committed)"
     }
   ],
+
   "nextSteps": [
     "Next action to take",
     "Following action"
   ],
+
   "context": {
     "keyDecisions": [
       {
         "decision": "What was decided",
         "rationale": "Why it was decided",
-        "date": "YYYY-MM-DDTHH:MM:SSZ"
+        "date": "YYYY-MM-DDTHH:MM:SSZ",
+        "alternatives": ["Rejected alternatives for context"]
       }
     ],
     "openQuestions": [
@@ -33,8 +64,23 @@
     ],
     "assumptions": [
       "Assumptions being made"
+    ],
+    "risksIdentified": [
+      "Known risks or concerns"
     ]
   },
+
+  "gitState": {
+    "_comment": "Snapshot of git state for session recovery. Run: git log --oneline -5",
+    "branch": "feature/branch-name",
+    "lastCommit": "abc1234 - Last commit message",
+    "uncommittedChanges": false,
+    "recentCommits": [
+      "abc1234 - Most recent",
+      "def5678 - Previous"
+    ]
+  },
+
   "references": {
     "relevantFiles": [
       "path/to/important/file.cs"
@@ -44,7 +90,19 @@
     ],
     "relatedCommits": [
       "abc1234 - Commit message"
+    ],
+    "externalResources": [
+      "URLs to relevant external docs or issues"
     ]
   },
+
+  "debuggingContext": {
+    "_comment": "Populated if /REFOCUS was invoked during this work",
+    "lastRefocusDate": null,
+    "hypothesesTested": [],
+    "rootCauseIdentified": null,
+    "evidenceGathered": []
+  },
+
   "notes": "Free-form notes about the current state"
 }

@@ -54,6 +54,7 @@ Use find-and-replace to customize these placeholders:
 | `docs/CLAUDE/ROADMAP.md` | Feature planning | Your milestones and planned work |
 | `docs/CLAUDE/IMPROVEMENTS.md` | Improvement proposals | Track refactoring ideas and their status |
 | `docs/CLAUDE/APPENDIX.md` | Supplementary reference | Process diagrams, seed data, glossary |
+| `docs/CLAUDE/CORE-LIBRARY.md` | Library/SDK documentation | ADRs, public API surface, consumer contracts (optional) |
 | `docs/CLAUDE/SESSION-STATE.template.json` | Multi-session state tracking | Use as-is for complex multi-session work |
 
 ## Documentation Structure
@@ -65,8 +66,13 @@ your-project/
 │   ├── commands/                # Custom slash commands
 │   │   ├── DEEPPLAN.md          # /DEEPPLAN - Structured implementation workflow
 │   │   ├── REFOCUS.md           # /REFOCUS - Debug reset protocol
-│   │   └── NEXTSTEPS.md         # /NEXTSTEPS - Sprint planning assistant
+│   │   ├── NEXTSTEPS.md         # /NEXTSTEPS - Sprint planning assistant
+│   │   ├── review-decision.md   # /review-decision - Multi-persona decision review
+│   │   └── codebase-context.md  # /codebase-context - Quick project summary
+│   ├── skills/                  # Project-specific skills
+│   │   └── project-name.skill.md.template
 │   ├── CREATING-COMMANDS.md     # Guide: How to create your own commands
+│   ├── CREATING-SKILLS.md       # Guide: How to create project skills
 │   ├── settings.template.json   # Template: Auto-approve permissions
 │   ├── hooks.template.json      # Template: Pre/post tool hooks
 │   └── README.md                # Explains the .claude folder
@@ -79,8 +85,37 @@ your-project/
         ├── ROADMAP.md           # What's planned
         ├── IMPROVEMENTS.md      # Improvement proposals and status
         ├── APPENDIX.md          # Supplementary reference material
+        ├── CORE-LIBRARY.md      # For library/SDK projects (optional)
         └── SESSION-STATE.template.json
 ```
+
+### Optional Folders
+
+These folders are recommended for larger projects:
+
+| Folder | Purpose | When to Use |
+|--------|---------|-------------|
+| `docs/archive/` | Historical planning documents | Keep old plans/designs for reference without cluttering active docs |
+| `docs/research/` | Domain knowledge, external frameworks | Store research materials, competitive analysis, domain expertise |
+| `docs/diagrams/` | Mermaid diagrams, architecture visuals | When visual documentation helps understanding |
+| `docs/CLAUDE/PLAN-*.md` | Implementation plans | For complex features that need dedicated planning documents |
+
+### Plan Documents Pattern
+
+For complex features, create dedicated plan files in `docs/CLAUDE/`:
+
+```
+docs/CLAUDE/
+├── PLAN-user-authentication.md    # Detailed implementation plan
+├── PLAN-api-v2-migration.md       # Migration strategy document
+└── PLAN-performance-optimization.md
+```
+
+**When to use PLAN-*.md vs. ROADMAP.md:**
+- **ROADMAP.md**: High-level feature list, priorities, milestones
+- **PLAN-*.md**: Detailed implementation plans for specific features with technical decisions, phased approach, and acceptance criteria
+
+Plan documents should be archived to `docs/archive/` after implementation.
 
 ## Key Patterns Included
 
@@ -119,13 +154,15 @@ Pre-built checklists for common workflows:
 
 ### Custom Slash Commands
 
-Three ready-to-use commands in `.claude/commands/`:
+Five ready-to-use commands in `.claude/commands/`:
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
 | `/DEEPPLAN` | Starting a multi-step feature | Presents plan for approval, loads context, creates phased implementation plan with commits |
 | `/REFOCUS` | Debugging spirals or gets stuck | Stops, re-reads debugging guidance, produces evidence-based revised approach |
 | `/NEXTSTEPS` | Planning next sprint | Analyzes roadmap, suggests prioritized tasks based on dependencies and value |
+| `/review-decision` | Evaluating architectural choices | Multi-persona analysis (Skeptic, Architect, Economist, Pragmatist, Tech Advocate) with confidence scoring |
+| `/codebase-context` | Session start or returning after break | Quick project summary with file counts, recent commits, active work |
 
 **Usage:** Type the command (e.g., `/DEEPPLAN`) in Claude Code to invoke the workflow.
 
