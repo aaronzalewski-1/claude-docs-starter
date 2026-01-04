@@ -199,8 +199,95 @@ If your skill isn't being applied:
 3. **Check the frontmatter** - Valid YAML with `name` and `description`
 4. **Check triggers** - Are keywords specific enough?
 
+---
+
+## Persona Skills
+
+Persona skills are a special type of skill that provide domain expertise for analytical personas. They differ from project skills in purpose and structure.
+
+### Persona Skill vs Project Skill
+
+| Aspect | Project Skill | Persona Skill |
+|--------|---------------|---------------|
+| **Purpose** | Project-specific context | Domain expertise frameworks |
+| **Content** | Locked decisions, patterns | Evaluation criteria, metrics |
+| **Triggered by** | Task keywords | Persona command |
+| **Location** | `.claude/skills/` | `.claude/skills/personas/` |
+| **Naming** | `{project}.skill.md` | `{persona}.persona.md` |
+
+### Persona Skill Structure
+
+```yaml
+---
+name: persona-name-knowledge
+description: Domain expertise for Persona Name - frameworks and evaluation criteria
+type: persona_skill
+persona: personas/persona-name
+version: 1.0.0
+---
+```
+
+### Content Sections
+
+A persona skill typically includes:
+
+1. **Frameworks** - Decision matrices, evaluation criteria
+2. **Categories/Tiers** - Classification systems
+3. **Metrics** - Quantitative thresholds and benchmarks
+4. **Anti-patterns** - What to avoid and why
+5. **Confidence Calibration** - How to score analysis certainty
+
+### Example: Minimal Persona Skill
+
+```markdown
+---
+name: reviewer-knowledge
+description: Domain expertise for Code Reviewer persona
+type: persona_skill
+persona: personas/reviewer
+version: 1.0.0
+---
+
+# Reviewer Domain Knowledge
+
+## Code Quality Metrics
+
+| Metric | Good | Acceptable | Concerning |
+|--------|------|------------|------------|
+| Cyclomatic complexity | < 10 | 10-20 | > 20 |
+| Function length | < 30 lines | 30-50 | > 50 |
+| Parameter count | < 4 | 4-6 | > 6 |
+
+## Common Anti-patterns
+
+| Pattern | Why It's Bad | Alternative |
+|---------|--------------|-------------|
+| God class | Too many responsibilities | Extract classes |
+| Magic numbers | Hard to understand | Use named constants |
+
+## Confidence Calibration
+
+| Evidence | Modifier |
+|----------|----------|
+| Follows team conventions | +0.1 |
+| Has test coverage | +0.1 |
+| Introduces new pattern | -0.05 |
+```
+
+### Creating a New Persona
+
+To add a new persona:
+
+1. Create the persona skill in `.claude/skills/personas/{name}.persona.md`
+2. Create the persona command in `.claude/commands/personas/{name}.md`
+3. Reference the skill in the command's frontmatter
+4. Optionally add to `/review-decision` orchestrator
+
+---
+
 ## Learn More
 
 - [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code)
 - [Creating Commands](CREATING-COMMANDS.md) - For workflow automation
+- [Personas Documentation](../docs/CLAUDE/PERSONAS.md) - Full persona system guide
 - [Project Documentation](../docs/CLAUDE/) - Your project-specific docs

@@ -131,6 +131,61 @@ See: [REFOCUS.md](commands/REFOCUS.md)
 Has Claude analyze something and produce a structured report.
 See: [NEXTSTEPS.md](commands/NEXTSTEPS.md)
 
+### Persona Command
+An analytical lens for evaluating decisions from a specific perspective.
+See: [commands/personas/](commands/personas/)
+
+**Persona Pattern Structure:**
+
+```markdown
+---
+name: persona-name
+description: Brief description and when to use
+persona_skill: skills/personas/persona-name.persona.md
+---
+
+# Persona Name
+
+You are the **Persona** - [role description].
+
+## Your Mandate
+
+**[Core principle in 3-5 words]**
+
+## Decision Under Review
+
+$ARGUMENTS
+
+## Your Process
+
+### Step 1: [First step]
+[Instructions]
+
+### Step 2: [Second step]
+[Instructions]
+
+## Output Format
+
+[Structured output template]
+
+## Confidence Scoring
+
+[Scoring criteria]
+
+## Domain Expertise
+
+Reference your PersonaSkill for:
+- [Framework 1]
+- [Framework 2]
+```
+
+Key elements:
+- **Frontmatter** references backing PersonaSkill
+- **Mandate** is a memorable phrase capturing the persona's purpose
+- **Process** is step-by-step analytical workflow
+- **Output Format** ensures consistent, structured responses
+- **Confidence Scoring** calibrates how certain the analysis is
+
 ## Using Commands with Arguments
 
 Commands can reference `$ARGUMENTS` to accept parameters:

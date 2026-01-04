@@ -76,64 +76,125 @@ At the start of complex or multi-session work:
 
 ## Context Loading Triggers
 
+Context triggers ensure Claude loads the right documentation at the right time. Each trigger specifies:
+- **When** to activate (task patterns)
+- **What** to read (required documentation)
+- **Why** it matters (prevents common mistakes)
+
 <!--
-Add context triggers for your project. These help Claude load the right documentation
-at the right time. Examples below - customize for your domain.
+Customize these triggers for your project. Add domain-specific triggers as needed.
 -->
 
 <load_database_context>
-Before modifying database schema, entities, or data access:
-1. Read [ARCHITECTURE.md](docs/CLAUDE/ARCHITECTURE.md) - database schema section
-2. Check existing entity patterns in your entities folder
-3. Review migration history
+**When:** Modifying database schema, entities, migrations, or data access patterns.
+**Triggers:** schema, migration, entity, DbContext, repository, query
+
+**Required Reading:**
+1. [ARCHITECTURE.md](docs/CLAUDE/ARCHITECTURE.md) - Database schema section
+2. Existing entity definitions in your models/entities folder
+3. Recent migration files for naming conventions
+
+**Why:** Prevents schema inconsistencies, naming convention violations, and migration ordering issues.
 </load_database_context>
 
 <load_api_context>
-Before modifying or adding API endpoints:
-1. Read [API-REFERENCE.md](docs/CLAUDE/API-REFERENCE.md)
-2. Check existing controller patterns
-3. Review endpoint naming conventions
+**When:** Creating or modifying REST/GraphQL endpoints, DTOs, or API contracts.
+**Triggers:** endpoint, controller, API, DTO, request, response
+
+**Required Reading:**
+1. [API-REFERENCE.md](docs/CLAUDE/API-REFERENCE.md) - Endpoint conventions
+2. Existing controller patterns for consistency
+3. DTO naming and validation patterns
+
+**Why:** Ensures consistent endpoint naming, response formats, and error handling.
 </load_api_context>
 
 <load_frontend_context>
-Before modifying UI components:
-1. Review existing component patterns
-2. Check CSS/styling conventions
-3. Follow established state management patterns
+**When:** Building or modifying UI components, views, or client-side logic.
+**Triggers:** component, view, page, UI, frontend, styling
+
+**Required Reading:**
+1. Existing component patterns and folder structure
+2. CSS/styling conventions (design system, variables)
+3. State management patterns in use
+
+**Why:** Maintains visual consistency and predictable component behavior.
 </load_frontend_context>
 
 <load_testing_context>
-Before writing or modifying tests:
-1. Check existing test patterns in test projects
-2. Review test naming conventions
-3. Understand test data setup patterns
-4. Check for shared fixtures or helpers
+**When:** Writing or modifying unit tests, integration tests, or test infrastructure.
+**Triggers:** test, spec, fixture, mock, assertion
+
+**Required Reading:**
+1. Existing test patterns and naming conventions
+2. Test data setup and fixture patterns
+3. Shared test utilities or helpers
+
+**Why:** Ensures tests are consistent, maintainable, and follow established patterns.
 </load_testing_context>
 
+<load_debugging_context>
+**When:** Investigating failures, unexpected behavior, or integration issues.
+**Triggers:** error, failure, bug, broken, not working, debug
+
+**Required Reading:**
+1. [DEVELOPMENT.md](docs/CLAUDE/DEVELOPMENT.md) - Debugging Checklist section
+2. Recent git commits for related changes
+3. Build/test output for actual error messages
+
+**Why:** Prevents debugging spirals. Follow the checklist: get the actual error message, verify infrastructure, test layers independently.
+</load_debugging_context>
+
+<load_decision_review_context>
+**When:** Evaluating architectural choices, technology selections, or implementation approaches.
+**Triggers:** should we, which approach, compare, tradeoffs, decision, evaluate
+
+**Required Action:**
+Use `/review-decision <decision>` to run multi-persona analysis, or invoke individual personas:
+- `/personas:skeptic` - Verify claims and challenge assumptions
+- `/personas:architect` - Evaluate structural integrity
+- `/personas:economist` - Analyze costs and ROI
+- `/personas:pragmatist` - Find MVP path
+
+**Why:** Prevents one-dimensional analysis. Multiple perspectives reveal hidden tradeoffs.
+</load_decision_review_context>
+
 <load_improvements_context>
-Before major architectural work or refactoring:
-1. Read [IMPROVEMENTS.md](docs/CLAUDE/IMPROVEMENTS.md) - check if this is already proposed
-2. Review related improvement proposals
-3. Check for dependencies between improvements
-4. Update proposal status as you work
+**When:** Planning major architectural work, refactoring, or new features.
+**Triggers:** refactor, improve, redesign, proposal, enhancement
+
+**Required Reading:**
+1. [IMPROVEMENTS.md](docs/CLAUDE/IMPROVEMENTS.md) - Check if already proposed
+2. Related improvement proposals for dependencies
+3. [ROADMAP.md](docs/CLAUDE/ROADMAP.md) - Current priorities
+
+**Why:** Prevents duplicate work and ensures changes align with project direction.
 </load_improvements_context>
 
 <load_core_library_context>
 <!-- Use this if your project has a shared library or SDK component -->
-Before modifying shared library code:
-1. Read [CORE-LIBRARY.md](docs/CLAUDE/CORE-LIBRARY.md) if it exists
-2. Check locked architectural decisions
-3. Review public API surface - avoid breaking changes
-4. Ensure no infrastructure dependencies leak into library
+**When:** Modifying shared library code that other projects depend on.
+**Triggers:** core, library, SDK, shared, package
+
+**Required Reading:**
+1. [CORE-LIBRARY.md](docs/CLAUDE/CORE-LIBRARY.md) - Public API surface
+2. Locked architectural decisions (do not change)
+3. Downstream consumers that would be affected
+
+**Why:** Library changes have ripple effects. Ensure no breaking changes to public APIs.
 </load_core_library_context>
 
 <load_generation_context>
 <!-- Use this for projects with content/data generation features -->
-Before modifying content generation or data seeding:
-1. Review existing generation patterns
-2. Check seed data in [APPENDIX.md](docs/CLAUDE/APPENDIX.md)
-3. Understand domain terminology and constraints
-4. Test with representative sample data
+**When:** Modifying content generation, data seeding, or synthetic data creation.
+**Triggers:** generate, seed, sample data, fixture data
+
+**Required Reading:**
+1. Existing generation patterns and templates
+2. [APPENDIX.md](docs/CLAUDE/APPENDIX.md) - Seed data definitions
+3. Domain terminology and constraints
+
+**Why:** Ensures generated content matches domain expectations and existing patterns.
 </load_generation_context>
 
 <!-- Add more context triggers as needed for your domain -->
