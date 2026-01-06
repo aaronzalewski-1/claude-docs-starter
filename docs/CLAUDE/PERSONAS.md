@@ -684,6 +684,23 @@ docs/decisions/
 
 See [docs/decisions/README.md](../decisions/README.md) for full documentation.
 
+### Reasoning Capture Integration
+
+Beyond formal artifacts, all persona reviews automatically capture decision reasoning to `docs/reasoning/`. This captures:
+
+- The decision point and consensus recommendation
+- Alternatives considered (from persona debates)
+- Confidence scores and unresolved tensions
+- Assumptions that were made
+
+This happens implicitly after every `/review-*` command. Use `/query-decisions` to search past reasoning:
+
+```
+/query-decisions What did the personas say about caching?
+```
+
+See [docs/reasoning/README.md](../reasoning/README.md) for Decision Intelligence documentation.
+
 ---
 
 ## Confidence Scoring

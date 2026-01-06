@@ -14,6 +14,7 @@ Transform how you work with Claude Code:
 
 - **15 specialized personas** across 4 packages that analyze from distinct perspectives
 - **Weighted consensus** that synthesizes viewpoints based on project phase and context
+- **Decision intelligence** that captures, queries, and visualizes your decision history
 - **Formal artifacts** (ADRs, Literature Reviews, Board Memos) generated automatically
 - **Context management** that keeps Claude focused across complex, multi-session work
 - **Living documentation** designed to evolve and accumulate institutional knowledge
@@ -163,6 +164,55 @@ Do NOT recommend: multi-tenant designs, tenant selection APIs
 
 Claude respects these boundaries while remaining flexible on living decisions.
 
+### Decision Intelligence
+
+Beyond persona reviews, the framework captures the reasoning behind all your decisions—the "why" that formal documents miss.
+
+**Automatic capture** at key milestones:
+- After persona reviews (consensus and tensions)
+- Before commits (change rationale)
+- At plan approval (approach and deferrals)
+- At significant decision points (tradeoffs and assumptions)
+
+**Query your decision history** with natural language:
+
+```
+/query-decisions Why did we choose PostgreSQL over MongoDB?
+/query-decisions What assumptions did we make about authentication?
+/query-decisions Which decisions had low confidence?
+```
+
+**Visualize decisions** from multiple perspectives:
+
+```
+/visualize-decisions last-week --view events --format mermaid
+/visualize-decisions "authentication" --view roles --format ascii
+```
+
+**Reconsider decisions safely** in an isolated sandbox:
+
+```
+/reconsider-decision "caching strategy" --run-personas
+/analyze-impact 2026-01-03-caching-recon
+/promote-reconsideration 2026-01-03-caching-recon --to-plan
+```
+
+The sandbox isolation ensures "what if" explorations never affect active planning until explicitly promoted.
+
+**Decision Intelligence Commands:**
+
+| Command | Purpose |
+|---------|---------|
+| `/capture-reasoning` | Explicitly capture a decision |
+| `/query-decisions` | Natural language search of past decisions |
+| `/visualize-decisions` | Process, roles, or events diagrams |
+| `/reconsider-decision` | Re-evaluate in isolated sandbox |
+| `/analyze-impact` | Understand ripple effects before changes |
+| `/promote-reconsideration` | Move sandbox analysis to active planning |
+| `/audit-reasoning` | Check data quality and rebuild index |
+
+See [docs/reasoning/README.md](docs/reasoning/README.md) for full documentation.
+
 ## Documentation Structure
 
 ```
@@ -189,10 +239,15 @@ your-project/
     │   ├── PERSONAS.md          # Complete persona reference
     │   ├── PERSONA-PACKAGES.md  # Creating custom packages
     │   └── SESSION-STATE.json   # Multi-session work tracking
-    └── decisions/               # Generated artifacts
-        ├── product/             # ADRs
-        ├── research/            # Literature reviews
-        └── advisory/            # Board memos
+    ├── decisions/               # Generated artifacts
+    │   ├── product/             # ADRs
+    │   ├── research/            # Literature reviews
+    │   └── advisory/            # Board memos
+    └── reasoning/               # Decision intelligence
+        ├── README.md            # System documentation
+        ├── index.json           # Fast lookup index
+        ├── YYYY-MM-DD-*.json    # Daily reasoning logs
+        └── sandbox/             # Isolated reconsiderations
 ```
 
 ## Extensibility
