@@ -1,6 +1,6 @@
 # DEPRECATED
 
-[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/) 
 
 > **This repository has been archived and is no longer maintained.**
 >
