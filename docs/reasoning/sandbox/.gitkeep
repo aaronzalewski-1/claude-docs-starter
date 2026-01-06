@@ -1,3 +1,0 @@
-# This file ensures the sandbox directory is tracked by git
-# Sandbox contains isolated reconsideration analyses
-# Files here are never auto-merged into active reasoning
