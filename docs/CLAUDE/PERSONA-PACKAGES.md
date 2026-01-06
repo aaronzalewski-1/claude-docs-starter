@@ -12,19 +12,19 @@ Personas are organized into **packages** - domain-specific groupings of compleme
 .claude/
 ├── commands/
 │   ├── personas/
-│   │   ├── product/           # Software Product Development package
+│   │   ├── core/              # Cross-cutting personas (used by all packages)
 │   │   │   ├── skeptic.md
+│   │   │   └── anthropic-expert.md
+│   │   ├── product/           # Software Product Development package
 │   │   │   ├── architect.md
 │   │   │   ├── economist.md
 │   │   │   └── pragmatist.md
 │   │   ├── research/          # Research Analysis package
-│   │   │   ├── skeptic.md
 │   │   │   ├── methodologist.md
 │   │   │   ├── synthesizer.md
 │   │   │   ├── critic.md
 │   │   │   └── librarian.md
 │   │   └── advisory/          # Business Advisory package
-│   │       ├── skeptic.md
 │   │       ├── cfo.md
 │   │       ├── go-to-market.md
 │   │       ├── strategist.md
@@ -37,19 +37,19 @@ Personas are organized into **packages** - domain-specific groupings of compleme
 │
 └── skills/
     └── personas/
-        ├── product/           # Product persona skills
+        ├── core/              # Core persona skills
         │   ├── skeptic.persona.md
+        │   └── anthropic-expert.persona.md
+        ├── product/           # Product persona skills
         │   ├── architect.persona.md
         │   ├── economist.persona.md
         │   └── pragmatist.persona.md
         ├── research/          # Research persona skills
-        │   ├── skeptic.persona.md
         │   ├── methodologist.persona.md
         │   ├── synthesizer.persona.md
         │   ├── critic.persona.md
         │   └── librarian.persona.md
         └── advisory/          # Advisory persona skills
-            ├── skeptic.persona.md
             ├── cfo.persona.md
             ├── go-to-market.persona.md
             ├── strategist.persona.md
@@ -486,14 +486,14 @@ You can invoke personas individually for focused analysis:
 
 | Persona | Role | Focus |
 |---------|------|-------|
-| Skeptic | Fact-checker | Verify claims, check sources |
+| Core Skeptic | Fact-checker | Verify claims, check sources |
 | Architect | Structure guardian | SOLID principles, patterns, coupling |
 | Economist | Cost analyst | ROI, TCO, resource efficiency |
 | Pragmatist | MVP advocate | Simplicity, deferral, reversibility |
 
 **Orchestrator**: `/review-product-decision`
 
-**Invocation**: `/personas/product:skeptic`, `/personas/product:architect`, etc.
+**Invocation**: `/personas/core:skeptic`, `/personas/product:architect`, etc.
 
 ### Research Package
 
@@ -501,7 +501,7 @@ You can invoke personas individually for focused analysis:
 
 | Persona | Role | Focus |
 |---------|------|-------|
-| Skeptic | Truth guardian | Citation verification, data integrity, claim validation |
+| Core Skeptic | Truth guardian | Citation verification, data integrity, claim validation |
 | Librarian | Source curator | Credibility, citations, evidence hierarchy |
 | Methodologist | Validity guardian | Research design, methodology, statistics |
 | Critic | Devil's advocate | Counterarguments, alternative explanations |
@@ -509,7 +509,7 @@ You can invoke personas individually for focused analysis:
 
 **Orchestrator**: `/review-research`
 
-**Invocation**: `/personas/research:skeptic`, `/personas/research:librarian`, etc.
+**Invocation**: `/personas/core:skeptic`, `/personas/research:librarian`, etc.
 
 ### Advisory Package
 
@@ -517,7 +517,7 @@ You can invoke personas individually for focused analysis:
 
 | Persona | Role | Focus |
 |---------|------|-------|
-| Skeptic | Truth verifier | Business claim verification, assumption testing |
+| Core Skeptic | Truth verifier | Business claim verification, assumption testing |
 | CFO | Financial guardian | Runway, unit economics, fundraising |
 | Go-to-Market | Revenue champion | Acquisition, retention, pricing |
 | Strategist | Vision keeper | Positioning, moats, exit planning |
@@ -527,7 +527,7 @@ You can invoke personas individually for focused analysis:
 
 **Orchestrator**: `/review-business-decision`
 
-**Invocation**: `/personas/advisory:skeptic`, `/personas/advisory:cfo`, etc.
+**Invocation**: `/personas/core:skeptic`, `/personas/advisory:cfo`, etc.
 
 **Unique Features**:
 - **Two-dimensional weighting**: Stage (Pre-seed → Exit) × Focus (Strategy, Funding, Growth, etc.)
@@ -603,9 +603,9 @@ Each package can produce formal documents from multi-persona analyses.
 
 | Package | Artifact | Command | Template |
 |---------|----------|---------|----------|
-| **Product** | Architecture Decision Record | `/export-artifact adr <name>` | `.claude/templates/product/adr.template.md` |
-| **Research** | Literature Review | `/export-artifact literature-review <name>` | `.claude/templates/research/literature-review.template.md` |
-| **Advisory** | Board Memo | `/export-artifact board-memo <name>` | `.claude/templates/advisory/board-memo.template.md` |
+| **Product** | Architecture Decision Record | `/review-product-decision <decision> --save <name>` | `.claude/templates/product/adr.template.md` |
+| **Research** | Literature Review | `/review-research <question> --save <name>` | `.claude/templates/research/literature-review.template.md` |
+| **Advisory** | Board Memo | `/review-business-decision <decision> --save <name>` | `.claude/templates/advisory/board-memo.template.md` |
 
 ### Persona-to-Artifact Mapping
 

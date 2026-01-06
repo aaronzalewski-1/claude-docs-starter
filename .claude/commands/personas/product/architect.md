@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/product:architect Should we use a monorepo or separate repos for our microservices?
+/personas/product:architect Evaluate this dependency injection pattern for testability
+/personas/product:architect Is our current service design following SOLID principles?
+```
+
 ## Quick Mode
 
 For simple decisions, skip to **Pattern Consistency Check** + **SOLID Quick Scan** only.

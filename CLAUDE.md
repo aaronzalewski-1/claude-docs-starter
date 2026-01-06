@@ -89,6 +89,12 @@ Customize these triggers for your project. Add domain-specific triggers as neede
 **When:** Modifying database schema, entities, migrations, or data access patterns.
 **Triggers:** schema, migration, entity, DbContext, repository, query
 
+**Example phrases that trigger this context:**
+- "Add a new table for..."
+- "Create a migration to..."
+- "Update the User entity..."
+- "Add a foreign key between..."
+
 **Required Reading:**
 1. [ARCHITECTURE.md](docs/CLAUDE/ARCHITECTURE.md) - Database schema section
 2. Existing entity definitions in your models/entities folder
@@ -100,6 +106,12 @@ Customize these triggers for your project. Add domain-specific triggers as neede
 <load_api_context>
 **When:** Creating or modifying REST/GraphQL endpoints, DTOs, or API contracts.
 **Triggers:** endpoint, controller, API, DTO, request, response
+
+**Example phrases that trigger this context:**
+- "Add an endpoint for..."
+- "Create a new API for..."
+- "What should the response format be for..."
+- "Add validation to the request..."
 
 **Required Reading:**
 1. [API-REFERENCE.md](docs/CLAUDE/API-REFERENCE.md) - Endpoint conventions
@@ -137,6 +149,12 @@ Customize these triggers for your project. Add domain-specific triggers as neede
 **When:** Investigating failures, unexpected behavior, or integration issues.
 **Triggers:** error, failure, bug, broken, not working, debug
 
+**Example phrases that trigger this context:**
+- "Why is this test failing?"
+- "I'm getting error X when..."
+- "This endpoint returns 500"
+- "The build is broken after..."
+
 **Required Reading:**
 1. [DEVELOPMENT.md](docs/CLAUDE/DEVELOPMENT.md) - Debugging Checklist section
 2. Recent git commits for related changes
@@ -149,12 +167,18 @@ Customize these triggers for your project. Add domain-specific triggers as neede
 **When:** Evaluating architectural choices, technology selections, or implementation approaches.
 **Triggers:** should we, which approach, compare, tradeoffs, decision, evaluate
 
+**Example phrases that trigger this context:**
+- "Should we use Redis or Memcached?"
+- "What's the best approach for..."
+- "Compare these two options..."
+- "Evaluate whether we should..."
+
 **Required Action:**
-Use `/review-decision <decision>` to run multi-persona analysis, or invoke individual personas:
-- `/personas:skeptic` - Verify claims and challenge assumptions
-- `/personas:architect` - Evaluate structural integrity
-- `/personas:economist` - Analyze costs and ROI
-- `/personas:pragmatist` - Find MVP path
+Use `/review-product-decision <decision>` to run multi-persona analysis, or invoke individual personas:
+- `/personas/core:skeptic` - Verify claims and challenge assumptions
+- `/personas/product:architect` - Evaluate structural integrity
+- `/personas/product:economist` - Analyze costs and ROI
+- `/personas/product:pragmatist` - Find MVP path
 
 **Why:** Prevents one-dimensional analysis. Multiple perspectives reveal hidden tradeoffs.
 </load_decision_review_context>
@@ -196,6 +220,23 @@ Use `/review-decision <decision>` to run multi-persona analysis, or invoke indiv
 
 **Why:** Ensures generated content matches domain expectations and existing patterns.
 </load_generation_context>
+
+<load_artifact_context>
+**When:** Working with decision artifacts, exporting reviews, or managing formal documentation.
+**Triggers:** artifact, decision record, ADR, literature review, board memo, --save, export
+
+**Example phrases that trigger this context:**
+- "Save this review as an ADR"
+- "Where do decision artifacts go?"
+- "Export this analysis"
+- "Generate a board memo"
+
+**Required Reading:**
+1. [docs/decisions/README.md](docs/decisions/README.md) - Artifact storage and workflow
+2. [.claude/skills/artifact-registry.skill.md](.claude/skills/artifact-registry.skill.md) - Template mappings
+
+**Why:** Ensures artifacts are saved correctly with proper naming conventions and folder structure.
+</load_artifact_context>
 
 <!-- Add more context triggers as needed for your domain -->
 

@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:counsel What IP protection do we need before launching?
+/personas/advisory:counsel Review the liability implications of this SaaS contract
+/personas/advisory:counsel Should we incorporate as LLC or C-Corp for fundraising?
+```
+
 ## Quick Mode
 
 For simple legal evaluations, skip to **Legal Risk Assessment** + **Recommendation** only.

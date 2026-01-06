@@ -10,10 +10,20 @@ Evaluate product/implementation decisions through four specialized personas, eac
 ## Command Format
 
 ```
-/review-product-decision <decision or implementation approach>
+/review-product-decision <decision or implementation approach> [--save <name>]
 ```
 
+**Arguments:**
+- `decision`: The technical decision or implementation approach to evaluate
+- `--save <name>`: (Optional) Save the analysis as an ADR to `docs/decisions/product/`
+
 Also triggers on natural language requests to review, debate, or evaluate architectural/implementation choices.
+
+**Examples:**
+```
+/review-product-decision Should we use Redis or Memcached for session caching?
+/review-product-decision Use microservices architecture --save microservices-decision
+```
 
 ## Package: Product Development
 
@@ -36,7 +46,7 @@ Each persona has:
 
 For the decision provided, run each persona analysis **in sequence**:
 
-1. **Skeptic Analysis** (`/personas/product:skeptic`)
+1. **Skeptic Analysis** (`/personas/core:skeptic`)
    - Verify all technical claims
    - Flag unverified assumptions
    - Challenge "obvious" choices
@@ -58,7 +68,16 @@ For the decision provided, run each persona analysis **in sequence**:
 
 ### Phase 2: Synthesize Consensus
 
-After all personas have analyzed, produce a weighted synthesis.
+After all personas have analyzed, reason through before producing the synthesis:
+
+**Pre-Synthesis Reasoning (think through these):**
+1. Which claims were verified by multiple personas?
+2. Where do confidence scores diverge most significantly?
+3. What would change each persona's recommendation?
+4. Are there any contradictions between persona findings?
+5. Which persona's concerns are most critical given the project phase?
+
+Then produce a weighted synthesis.
 
 ## Output Format
 
@@ -125,11 +144,34 @@ Default weights vary by project phase. Adjust based on your context:
 | **Post-validation** (early users) | 0.20 | 0.25 | 0.20 | 0.35 |
 | **Scale-ready** (growth phase) | 0.20 | **0.30** | 0.15 | 0.35 |
 
-**Pre-validation**: Pragmatist has highest weight - ship to learn before optimizing.
+### Weighting Rationale
 
-**Post-validation**: Architect weight increases - sustainable design matters more.
+**Pre-validation** (no users yet):
+- **Pragmatist dominates (0.50)** - Ship to learn. Perfect code for the wrong feature is waste.
+- Skeptic/Architect low (0.15) - Verification and structure matter less than learning speed.
+- Economist moderate (0.20) - Keep an eye on costs, but don't optimize prematurely.
 
-**Scale-ready**: Architect dominates - structural integrity is critical.
+**Post-validation** (early users, iterating):
+- **Architect increases (0.25)** - With real users, sustainable design starts to matter.
+- Pragmatist decreases (0.35) - Still ship fast, but with more care.
+- Skeptic increases (0.20) - Verify claims now that decisions have real impact.
+
+**Scale-ready** (growth phase):
+- **Architect dominates (0.30)** - Poor architecture now creates compounding debt.
+- Pragmatist still high (0.35) - Keep shipping, but technical debt is riskier.
+- Economist decreases (0.15) - Scale economics usually already understood.
+
+### Example Calculation
+
+For a **Pre-validation** project:
+```
+Skeptic:    0.75 confidence × 0.15 weight = 0.11
+Architect:  0.80 confidence × 0.15 weight = 0.12
+Economist:  0.85 confidence × 0.20 weight = 0.17
+Pragmatist: 0.90 confidence × 0.50 weight = 0.45
+                              ────────────────────
+Weighted Average:                          0.85
+```
 
 ## When Personas Disagree
 
@@ -157,7 +199,7 @@ Each persona provides a confidence score:
 You can invoke personas individually for focused analysis:
 
 ```
-/personas/product:skeptic Should we use Redis for caching?
+/personas/core:skeptic Should we use Redis for caching?
 /personas/product:architect Evaluate this service layer design
 /personas/product:economist Compare cloud vs self-hosted database
 /personas/product:pragmatist Is this feature worth building now?
@@ -184,6 +226,26 @@ Then synthesizes weighted consensus with recommendation.
 | **Product** | `/review-product-decision` | Implementation decisions, architecture |
 | **Research** | `/review-research` | Research questions, literature analysis |
 
+## If Analysis Cannot Proceed
+
+If the review cannot be completed due to insufficient information:
+
+1. **Identify which personas are blocked** - Which analyses cannot proceed?
+2. **State specifically what's missing** - Technical details, context, requirements?
+3. **Provide partial analysis** - Complete what CAN be done
+4. **Set confidence to reflect gaps** - Low confidence for incomplete areas
+5. **List specific questions** - What must be answered to proceed?
+
+**Example:**
+> **Blocked:** Economist cannot assess costs without knowing expected scale
+> **Partial analysis available:** Skeptic and Architect can proceed
+> **Questions needed:**
+> - Expected user count at launch?
+> - Growth projections for year 1?
+> - Budget constraints?
+
+---
+
 ## Next Steps
 
 After consensus, offer relevant follow-up options:
@@ -194,3 +256,60 @@ After consensus, offer relevant follow-up options:
 | Architectural changes | Implementation guidance |
 | Cost optimization | Scale economics projection |
 | Simplification recommended | MVP implementation approach |
+
+---
+
+## Saving as ADR (--save option)
+
+When `--save <name>` is provided, generate an Architecture Decision Record after the analysis.
+
+### Step 1: Generate ADR Content
+
+After completing the weighted consensus, transform the analysis into ADR format:
+
+| Analysis Section | ADR Section |
+|------------------|-------------|
+| Decision statement | Context |
+| Consensus recommendation | Decision |
+| Benefits from each persona | Positive Consequences |
+| Risks/tradeoffs identified | Negative Consequences |
+| "What Can Wait" items | Neutral Consequences |
+| Options discussed | Alternatives Considered |
+| Persona findings & scores | Analysis Summary |
+
+### Step 2: Create ADR File
+
+Save to: `docs/decisions/product/YYYY-MM-DD-<name>/README.md`
+
+Use template from `.claude/templates/product/adr.template.md`
+
+### Step 3: Report Save Location
+
+After saving, append to output:
+
+```markdown
+---
+
+## ADR Saved
+
+**File:** `docs/decisions/product/YYYY-MM-DD-<name>/README.md`
+
+**Convert to other formats:**
+```bash
+cd docs/decisions/product/YYYY-MM-DD-<name>
+pandoc README.md -o decision.pdf    # PDF
+pandoc README.md -o decision.docx   # Word
+```
+
+**Track in git:**
+```bash
+git add docs/decisions/product/YYYY-MM-DD-<name>/
+git commit -m "ADR: <name>"
+```
+```
+
+### Naming Guidelines
+
+- Use kebab-case: `redis-caching`, `auth-strategy`
+- Be descriptive but concise
+- Date prefix added automatically

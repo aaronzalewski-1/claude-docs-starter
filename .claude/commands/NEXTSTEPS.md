@@ -6,9 +6,10 @@ Analyze the project roadmap and suggest actionable tasks for the next sprint.
 
 ### Step 1: Review Current State
 
-1. **Read the Roadmap**: Review [ROADMAP.md](docs/CLAUDE/ROADMAP.md) thoroughly
-2. **Check Recent Changes**: Review [CHANGELOG.md](docs/CLAUDE/CHANGELOG.md) for the latest completed work
-3. **Verify Git Status**: Check recent commits to ensure roadmap reflects actual progress
+1. **Read the Roadmap**: `Read docs/CLAUDE/ROADMAP.md` - Review thoroughly
+2. **Check Recent Changes**: `Read docs/CLAUDE/CHANGELOG.md` - Review latest completed work
+3. **Verify Git Status**: Run `git log --oneline -10` to ensure roadmap reflects actual progress
+4. **Check Work in Progress**: Run `git status` to identify uncommitted work
 
 ### Step 2: Roadmap Currency Check
 
@@ -30,8 +31,10 @@ For the next sprint, evaluate potential tasks against these criteria:
 | **Dependencies** | High | What must be completed first? What does this unblock? |
 | **Business Value** | High | Does this move toward production readiness or key features? |
 | **Technical Risk** | Medium | Is this well-understood or does it need exploration first? |
-| **Effort Estimate** | Medium | Can this realistically fit in a sprint? |
-| **Quick Wins** | Low | Any low-effort, high-impact items to include? |
+| **Complexity** | Medium | Low/Medium/High - Can this realistically fit in a sprint? |
+| **Quick Wins** | Low | Any low-complexity, high-impact items to include? |
+
+**Note:** Use complexity ratings (Low/Medium/High), not time estimates. Let the user determine scheduling.
 
 ### Step 4: Sprint Recommendation
 
@@ -42,14 +45,14 @@ Present your recommendations in this format:
 **Goal:** [One sentence describing the sprint's primary objective]
 
 ### High Priority Tasks
-| # | Task | Value | Effort | Dependencies |
-|---|------|-------|--------|--------------|
-| 1 | ... | ... | ... | ... |
+| # | Task | Value | Complexity | Dependencies |
+|---|------|-------|------------|--------------|
+| 1 | ... | ... | Low/Med/High | ... |
 
 ### Medium Priority Tasks
-| # | Task | Value | Effort | Dependencies |
-|---|------|-------|--------|--------------|
-| 1 | ... | ... | ... | ... |
+| # | Task | Value | Complexity | Dependencies |
+|---|------|-------|------------|--------------|
+| 1 | ... | ... | Low/Med/High | ... |
 
 ### Optional Stretch Goals
 - [Items to tackle if time permits]
@@ -65,8 +68,16 @@ Present your recommendations in this format:
 1. **Be Specific**: Reference actual file paths, endpoints, or features from the codebase
 2. **Be Actionable**: Each task should be something that can be picked up and started
 3. **Consider Dependencies**: Order tasks logically based on what must come first
-4. **Estimate Realistically**: Don't overload the sprint - quality over quantity
+4. **Scope Realistically**: Don't overload the sprint - quality over quantity
 5. **Align with Architecture**: Ensure suggestions follow patterns in [DEVELOPMENT.md](docs/CLAUDE/DEVELOPMENT.md)
+
+## What NOT to Do
+
+- **Don't propose tasks without reading actual code/files first** - Verify assumptions before recommending
+- **Don't include time estimates** - Use complexity ratings only; let users determine scheduling
+- **Don't recommend work already in progress** - Check git status for uncommitted changes
+- **Don't duplicate existing roadmap items** - Cross-reference to avoid redundancy
+- **Don't ignore dependencies** - If Task B requires Task A, don't put B before A
 
 ## Questions to Ask
 

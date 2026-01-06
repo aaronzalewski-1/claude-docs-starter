@@ -2,6 +2,11 @@
 
 This folder stores formal documents generated from multi-persona analyses.
 
+**Related Documentation:**
+- [PERSONAS.md](../CLAUDE/PERSONAS.md) - Full persona system reference
+- [PERSONA-PACKAGES.md](../CLAUDE/PERSONA-PACKAGES.md) - Package architecture
+- [artifact-registry.skill.md](../../.claude/skills/artifact-registry.skill.md) - Template mappings
+
 ---
 
 ## Structure
@@ -26,28 +31,39 @@ Each decision folder contains:
 
 | Package | Artifact | Command |
 |---------|----------|---------|
-| **Product** | Architecture Decision Record | `/export-artifact adr <name>` |
-| **Research** | Literature Review | `/export-artifact literature-review <name>` |
-| **Advisory** | Board Memo | `/export-artifact board-memo <name>` |
+| **Product** | Architecture Decision Record | `/review-product-decision <decision> --save <name>` |
+| **Research** | Literature Review | `/review-research <question> --save <name>` |
+| **Advisory** | Board Memo | `/review-business-decision <decision> --save <name>` |
 
 ---
 
 ## Workflow
 
-1. Run a persona review command:
-   ```
-   /review-product-decision Should we use Redis for caching?
-   ```
+Run a persona review command with `--save` to generate an artifact in a single step:
 
-2. After review completes, export to a formal document:
-   ```
-   /export-artifact adr redis-caching
-   ```
+```
+/review-product-decision Should we use Redis for caching? --save redis-caching
+```
 
-3. Find your artifact at:
-   ```
-   docs/decisions/product/2026-01-04-redis-caching/README.md
-   ```
+Find your artifact at:
+```
+docs/decisions/product/2026-01-04-redis-caching/README.md
+```
+
+---
+
+## When to Save
+
+| Scenario | Use `--save`? | Rationale |
+|----------|---------------|-----------|
+| Formal documentation needed | ✅ Yes | Creates permanent record |
+| Stakeholder communication | ✅ Yes | Shareable, convertible to PDF/DOCX |
+| Architectural decision | ✅ Yes | ADRs are valuable project artifacts |
+| Quick exploration | ❌ No | Just run the review without saving |
+| Personal learning | ❌ No | Review output is sufficient |
+| Iterating on a decision | ❌ No | Save only when finalized |
+
+**Tip:** Run the review first without `--save` to see if the analysis is useful, then re-run with `--save` if you want to preserve it.
 
 ---
 
@@ -90,3 +106,40 @@ git log --oneline docs/decisions/product/2026-01-04-redis-caching/
 ```
 
 For major revisions, create a new dated folder rather than modifying the original.
+
+---
+
+## Artifact Templates
+
+Each package uses a specific template to structure the generated document:
+
+| Package | Template | Preview |
+|---------|----------|---------|
+| **Product** | ADR | [adr.template.md](../../.claude/templates/product/adr.template.md) |
+| **Research** | Literature Review | [literature-review.template.md](../../.claude/templates/research/literature-review.template.md) |
+| **Advisory** | Board Memo | [board-memo.template.md](../../.claude/templates/advisory/board-memo.template.md) |
+
+Templates define the document structure and how persona outputs map to sections.
+
+---
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Folder not created | Missing `--save` flag | Re-run with `--save <name>` appended |
+| Wrong package folder | Used wrong review command | Use the correct review command for your domain |
+| Pandoc not found | Not installed | Install from [pandoc.org](https://pandoc.org/installing.html) |
+| Name conflicts | Duplicate artifact name on same date | Use a more specific name or different date |
+| Empty artifact | Review was incomplete | Ensure all personas completed before saving |
+
+### Common Mistakes
+
+1. **Forgetting `--save`**: The review runs but no file is created
+   - Fix: Re-run the exact same command with `--save <name>` added
+
+2. **Using spaces in names**: `--save my decision` fails
+   - Fix: Use kebab-case: `--save my-decision`
+
+3. **Wrong command for domain**: Using `/review-product-decision` for a business strategy question
+   - Fix: Use `/review-business-decision` for business decisions, `/review-research` for research questions

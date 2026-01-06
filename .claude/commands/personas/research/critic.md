@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/research:critic Challenge the thesis that remote work reduces productivity
+/personas/research:critic What are the counterarguments to using AI for medical diagnosis?
+/personas/research:critic Stress-test our assumption that users prefer mobile-first design
+```
+
 ## Quick Mode
 
 For simple challenges, skip to **Steel-man** + **Key Counterarguments** only.

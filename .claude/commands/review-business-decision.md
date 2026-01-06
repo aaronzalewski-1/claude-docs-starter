@@ -10,10 +10,23 @@ Evaluate business decisions through a seven-persona advisory board, with dynamic
 ## Command Format
 
 ```
-/review-business-decision <decision> [stage:<stage>] [focus:<focus>]
+/review-business-decision <decision> [stage:<stage>] [focus:<focus>] [--save <name>]
 ```
 
+**Arguments:**
+- `decision`: The business decision to evaluate
+- `stage`: (Optional) Override auto-detected stage: `pre-seed`, `seed`, `series-a`, `series-b+`, `exit`
+- `focus`: (Optional) Override auto-detected focus: `strategy`, `funding`, `growth`, `product`, `operations`, `legal`
+- `--save <name>`: (Optional) Save the analysis as a Board Memo to `docs/decisions/advisory/`
+
 Also triggers on natural language requests for business advice or decision evaluation.
+
+**Examples:**
+```
+/review-business-decision Should we raise a Series A now or wait 6 months?
+/review-business-decision Evaluate this partnership opportunity --save acme-partnership
+/review-business-decision Should we pivot to B2B? stage:seed focus:strategy --save b2b-pivot
+```
 
 ## Package: Advisory
 
@@ -125,7 +138,7 @@ Before running personas, detect:
 
 Run each persona analysis **in sequence**:
 
-1. **Skeptic Analysis** (`/personas/advisory:skeptic`)
+1. **Skeptic Analysis** (`/personas/core:skeptic`)
    - Verify business claims and data
    - Test key assumptions
    - Check for business fallacies
@@ -162,7 +175,16 @@ Run each persona analysis **in sequence**:
 
 ### Phase 3: Synthesize Consensus
 
-After all personas have analyzed, produce weighted synthesis.
+After all personas have analyzed, reason through before producing the synthesis:
+
+**Pre-Synthesis Reasoning (think through these):**
+1. Which claims were verified by the Skeptic that affect other analyses?
+2. Where do confidence scores diverge most significantly?
+3. Are financial projections (CFO) aligned with operational capacity (Ops)?
+4. Do strategic recommendations (Strategist) match execution reality (Ops)?
+5. What stage-specific factors should dominate this decision?
+
+Then produce weighted synthesis.
 
 ---
 
@@ -307,7 +329,7 @@ Each persona provides a confidence score:
 You can invoke personas individually for focused analysis:
 
 ```
-/personas/advisory:skeptic Verify the market size claims in this pitch deck
+/personas/core:skeptic Verify the market size claims in this pitch deck
 /personas/advisory:cfo What's our runway impact if we hire 5 engineers?
 /personas/advisory:go-to-market Should we pursue enterprise or SMB first?
 /personas/advisory:strategist Is this market window closing?
@@ -352,6 +374,25 @@ Then synthesizes weighted consensus with stage-appropriate recommendation.
 
 ---
 
+## If Analysis Cannot Proceed
+
+If the review cannot be completed due to insufficient information:
+
+1. **Identify which personas are blocked** - Which advisors cannot proceed?
+2. **State what's missing** - Financials? Market data? Team capacity?
+3. **Provide partial analysis** - Complete what CAN be done
+4. **Flag critical gaps** - Which missing data is most important?
+5. **Recommend data gathering** - How to get the missing information
+
+**Example:**
+> **Blocked:** CFO cannot assess runway impact - current burn rate unknown
+> **Blocked:** Operations cannot evaluate capacity - team size not specified
+> **Partial analysis available:** Strategist and Counsel can proceed
+> **Critical gap:** Financial data needed before any recommendation
+> **Action required:** Provide current MRR, burn rate, and team composition
+
+---
+
 ## Next Steps
 
 After consensus, offer relevant follow-up options:
@@ -365,3 +406,60 @@ After consensus, offer relevant follow-up options:
 | Execution concerns | Operations capacity planning |
 | Product validation needed | Product Advisor user research plan |
 | Legal complexity | Counsel risk mitigation roadmap |
+
+---
+
+## Saving as Board Memo (--save option)
+
+When `--save <name>` is provided, generate a Board Memo document after the analysis.
+
+### Step 1: Generate Board Memo Content
+
+After completing the weighted consensus, transform the analysis into board memo format:
+
+| Analysis Section | Board Memo Section |
+|------------------|-------------------|
+| Detected stage/focus | Decision Context |
+| Each persona's analysis | Advisory Perspectives |
+| Weighted consensus table | Consensus Table |
+| Key tensions | Key Risks |
+| Recommendation | Recommendation |
+| Critical actions | Required Actions |
+| Triggers for revisiting | Milestones |
+
+### Step 2: Create Board Memo File
+
+Save to: `docs/decisions/advisory/YYYY-MM-DD-<name>/README.md`
+
+Use template from `.claude/templates/advisory/board-memo.template.md`
+
+### Step 3: Report Save Location
+
+After saving, append to output:
+
+```markdown
+---
+
+## Board Memo Saved
+
+**File:** `docs/decisions/advisory/YYYY-MM-DD-<name>/README.md`
+
+**Convert to other formats:**
+```bash
+cd docs/decisions/advisory/YYYY-MM-DD-<name>
+pandoc README.md -o memo.pdf    # PDF
+pandoc README.md -o memo.docx   # Word
+```
+
+**Track in git:**
+```bash
+git add docs/decisions/advisory/YYYY-MM-DD-<name>/
+git commit -m "Board Memo: <name>"
+```
+```
+
+### Naming Guidelines
+
+- Use kebab-case: `series-a-timing`, `partnership-acme`
+- Be descriptive but concise
+- Date prefix added automatically

@@ -22,6 +22,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/product:pragmatist Do we really need microservices for our MVP?
+/personas/product:pragmatist What's the simplest way to add user authentication?
+/personas/product:pragmatist Can we defer real-time notifications until we have users?
+```
+
 ## Quick Mode
 
 For simple decisions, skip to **MVP Path** + **What Can Wait** only.

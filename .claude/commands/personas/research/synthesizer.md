@@ -23,6 +23,14 @@ You exist to enable:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/research:synthesizer Integrate these 5 papers on transformer architectures
+/personas/research:synthesizer What patterns emerge from our user interview findings?
+/personas/research:synthesizer Connect the themes across these competitive analysis sources
+```
+
 ## Quick Mode
 
 For simple synthesis, skip to **Key Themes** + **Integration** only.

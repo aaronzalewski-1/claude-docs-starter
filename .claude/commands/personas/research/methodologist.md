@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/research:methodologist Evaluate the methodology of this A/B test design
+/personas/research:methodologist Is a sample size of 100 sufficient for this user survey?
+/personas/research:methodologist Assess whether this study's conclusions are supported by its data
+```
+
 ## Quick Mode
 
 For simple assessments, skip to **Validity Check** + **Key Limitations** only.

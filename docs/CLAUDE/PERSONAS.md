@@ -15,17 +15,18 @@ Personas are organized into domain-specific packages:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  PACKAGES                                                    │
+│  core/ - Cross-cutting personas (Skeptic, Anthropic Expert)  │
 │  product/ - Software development decisions                   │
 │  research/ - Research analysis and source evaluation         │
 │  advisory/ - Business strategy and founder guidance          │
 ├─────────────────────────────────────────────────────────────┤
 │  ORCHESTRATORS                                               │
-│  /review-product-decision - Runs all product personas        │
-│  /review-research - Runs all research personas               │
-│  /review-business-decision - Runs all advisory personas      │
+│  /review-product-decision - Core Skeptic + product personas  │
+│  /review-research - Core Skeptic + research personas         │
+│  /review-business-decision - Core Skeptic + advisory personas│
 ├─────────────────────────────────────────────────────────────┤
 │  PERSONA COMMANDS                                            │
-│  /personas/product:skeptic, /personas/research:librarian     │
+│  /personas/core:skeptic (unified), /personas/research:librarian│
 │  /personas/advisory:cfo, /personas/advisory:strategist       │
 │  Individual analytical lenses with step-by-step processes    │
 ├─────────────────────────────────────────────────────────────┤
@@ -63,36 +64,79 @@ Each package consists of three tiers:
 
 ---
 
+## Core Package
+
+**Purpose**: Cross-cutting personas that work across all domains - verification, AI integration, and foundational analysis capabilities.
+
+**Note**: Core personas do not have a dedicated orchestrator. They are designed to be invoked individually or integrated into domain-specific reviews.
+
+### Skeptic (Unified)
+
+**Mandate:** *Trust nothing. Verify everything. Pursue until truth is known.*
+
+**Role:** Relentless fact-checker and assumption challenger across all domains.
+
+**Use when you need:**
+- Claims verified across technical, research, or business domains
+- Assumptions challenged with evidence
+- Information pursued until verified or definitively unverifiable
+- Citation chains traced to primary sources
+- Logical fallacies detected
+
+**Key Frameworks (from PersonaSkill):**
+- Unified source credibility hierarchy (Tier 1-4 across all domains)
+- Claim categorization (Factual, Performance, Statistical, Best Practice, Causal, Predictive, Comparative)
+- Technical verification (lifecycle awareness, API/framework validation)
+- Research verification (citation chains, statistical red flags, evidence hierarchy)
+- Business verification (market claims, vendor assessment, financial validation)
+- Three verification modes: Quick (5 min), Standard (30 min), Relentless (until verified)
+
+**Why Unified?** The Core Skeptic consolidates verification expertise from all domain-specific skeptics into a single, comprehensive persona. Use this when your analysis crosses domain boundaries or when you need the full verification toolkit.
+
+**Invocation:**
+```
+/personas/core:skeptic Is Redis actually faster than PostgreSQL for our session caching use case?
+```
+
+---
+
+### Anthropic Expert
+
+**Mandate:** *Optimize for Claude's strengths. Work with the training, not against it.*
+
+**Role:** Authoritative guidance on Claude capabilities, prompt engineering, and AI integration.
+
+**Use when you need:**
+- Prompt designs evaluated and optimized
+- System instructions structured effectively
+- Claude capabilities and limitations understood
+- AI integration patterns reviewed
+- Constitutional AI alignment checked
+
+**Key Frameworks (from PersonaSkill):**
+- Constitutional AI principles (helpfulness, harmlessness, honesty)
+- Dynamic prompt engineering patterns
+- XML tag best practices
+- Few-shot learning guidelines
+- Chain of thought techniques
+- Tool use and function calling patterns
+- Safety and alignment considerations
+- Prompt optimization workflows
+
+**Invocation:**
+```
+/personas/core:anthropic-expert Review this system prompt for our customer service bot
+```
+
+---
+
 ## Product Package
 
 **Purpose**: Software product development decisions - architecture, technology selection, cost analysis, scope management.
 
 **Orchestrator**: `/review-product-decision`
 
-### Skeptic
-
-**Mandate:** *Trust nothing. Verify everything.*
-
-**Role:** Fact-checker and assumption challenger.
-
-**Use when you need:**
-- Technical claims verified against documentation
-- Assumptions identified and challenged
-- Sources of truth cited
-- Unverified statements flagged
-
-**Key Frameworks (from PersonaSkill):**
-- Source credibility hierarchy (Tier 1-4)
-- Claim categorization (Factual, Performance, Best Practice, Predictive)
-- Technology lifecycle awareness
-- Verification workflows
-
-**Invocation:**
-```
-/personas/product:skeptic Should we use Redis for caching?
-```
-
----
+**Note**: This package uses the **Core Skeptic** (`/personas/core:skeptic`) for verification. The Core Skeptic provides unified verification capabilities across all domains.
 
 ### Architect
 
@@ -179,31 +223,7 @@ Each package consists of three tiers:
 
 **Orchestrator**: `/review-research`
 
-### Skeptic
-
-**Mandate:** *Trust nothing. Verify everything.*
-
-**Role:** Truth guardian and claim validator.
-
-**Use when you need:**
-- Citations verified against actual sources
-- Data integrity assessment
-- Misrepresentation pattern detection
-- Primary source tracing
-
-**Key Frameworks (from PersonaSkill):**
-- Citation verification frameworks
-- Statistical red flag detection
-- Data integrity assessment
-- Common misrepresentation patterns
-- Primary source tracing methods
-
-**Invocation:**
-```
-/personas/research:skeptic Verify the citations in this paper support its claims
-```
-
----
+**Note**: This package uses the **Core Skeptic** (`/personas/core:skeptic`) for verification. The Core Skeptic provides unified verification capabilities across all domains.
 
 ### Librarian
 
@@ -316,32 +336,7 @@ Each package consists of three tiers:
 
 **Unique Feature**: Two-dimensional weighting based on business maturity stage AND decision focus area.
 
-### Skeptic
-
-**Mandate:** *Trust nothing. Verify everything.*
-
-**Role:** Truth verifier and assumption tester.
-
-**Use when you need:**
-- Business claims verified
-- Market data validated
-- Assumptions tested
-- Business fallacies detected
-- Vendor claims assessed
-
-**Key Frameworks (from PersonaSkill):**
-- Business claim verification
-- Market data validation
-- Common business fallacy detection
-- Vendor/partner claim assessment
-- Assumption testing methods
-
-**Invocation:**
-```
-/personas/advisory:skeptic Verify the market size claims in this pitch deck
-```
-
----
+**Note**: This package uses the **Core Skeptic** (`/personas/core:skeptic`) for verification. The Core Skeptic provides unified verification capabilities across all domains.
 
 ### CFO
 
@@ -505,9 +500,14 @@ Each package consists of three tiers:
 
 Use individual personas for focused, single-perspective analysis:
 
+**Core Package:**
+```
+/personas/core:skeptic Is this claim about PostgreSQL performance actually verified?
+/personas/core:anthropic-expert Review this system prompt for our chatbot
+```
+
 **Product Package:**
 ```
-/personas/product:skeptic Does Azure CLU support batch inference?
 /personas/product:architect Should we add a caching layer?
 /personas/product:economist What's the real cost of adding Redis?
 /personas/product:pragmatist Can we ship without the admin dashboard?
@@ -515,7 +515,6 @@ Use individual personas for focused, single-perspective analysis:
 
 **Research Package:**
 ```
-/personas/research:skeptic Verify these citations actually support the claims
 /personas/research:librarian Evaluate this meta-analysis
 /personas/research:methodologist Is this sample size adequate?
 /personas/research:critic What are the counterarguments to this claim?
@@ -524,7 +523,6 @@ Use individual personas for focused, single-perspective analysis:
 
 **Advisory Package:**
 ```
-/personas/advisory:skeptic Verify the market size claims in this pitch deck
 /personas/advisory:cfo What's our runway if we hire 5 engineers?
 /personas/advisory:go-to-market Should we pursue enterprise or SMB?
 /personas/advisory:strategist Is this market window closing?
@@ -532,6 +530,8 @@ Use individual personas for focused, single-perspective analysis:
 /personas/advisory:product-advisor Should we build or buy this feature?
 /personas/advisory:counsel What are the legal risks of this partnership?
 ```
+
+**Note:** For verification across all domains, use `/personas/core:skeptic`.
 
 ### Full Multi-Persona Review
 
@@ -541,19 +541,19 @@ Use orchestrators for comprehensive analysis when you need multiple perspectives
 ```
 /review-product-decision Use Redis for session caching instead of in-memory cache
 ```
-Triggers all four product personas, then synthesizes weighted consensus.
+Triggers Core Skeptic + three product personas (Architect, Economist, Pragmatist), then synthesizes weighted consensus.
 
 **Research Questions:**
 ```
 /review-research Does intermittent fasting improve cognitive function?
 ```
-Triggers all five research personas (including Skeptic), then synthesizes weighted consensus.
+Triggers Core Skeptic + four research personas (Librarian, Methodologist, Critic, Synthesizer), then synthesizes weighted consensus.
 
 **Business Decisions:**
 ```
 /review-business-decision Should we raise a Series A now or wait 6 months?
 ```
-Triggers all seven advisory personas (including Skeptic) with stage-aware weighting, then synthesizes weighted consensus.
+Triggers Core Skeptic + six advisory personas with stage-aware weighting, then synthesizes weighted consensus.
 
 ---
 
@@ -628,32 +628,28 @@ When persona confidence scores diverge by >0.3, orchestrators surface the confli
 
 ## Artifact Production
 
-After running a multi-persona review, you can export the analysis to a formal document suitable for sharing, archiving, or converting to DOCX/PDF.
+Multi-persona reviews can generate formal documents suitable for sharing, archiving, or converting to DOCX/PDF by using the `--save` option.
 
 ### Available Artifacts
 
 | Package | Artifact | Command | Output |
 |---------|----------|---------|--------|
-| **Product** | Architecture Decision Record | `/export-artifact adr <name>` | ADR document |
-| **Research** | Literature Review | `/export-artifact literature-review <name>` | Review document |
-| **Advisory** | Board Memo | `/export-artifact board-memo <name>` | Board-ready memo |
+| **Product** | Architecture Decision Record | `/review-product-decision <decision> --save <name>` | ADR document |
+| **Research** | Literature Review | `/review-research <question> --save <name>` | Review document |
+| **Advisory** | Board Memo | `/review-business-decision <decision> --save <name>` | Board-ready memo |
 
 ### Workflow
 
-1. **Run a persona review:**
-   ```
-   /review-product-decision Should we use Redis for caching?
-   ```
+Run the review command with `--save` to generate an artifact in a single step:
 
-2. **Export to artifact after analysis completes:**
-   ```
-   /export-artifact adr redis-caching
-   ```
+```
+/review-product-decision Should we use Redis for caching? --save redis-caching
+```
 
-3. **Find your artifact:**
-   ```
-   docs/decisions/product/2026-01-04-redis-caching/README.md
-   ```
+Find your artifact at:
+```
+docs/decisions/product/2026-01-04-redis-caching/README.md
+```
 
 ### Format Conversion
 
@@ -717,9 +713,74 @@ Each persona skill defines confidence modifiers based on evidence strength. Exam
 
 ---
 
-## Creating New Packages
+## Custom Packages
 
-For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md](PERSONA-PACKAGES.md).
+The framework can generate domain-specific persona packages tailored to your project.
+
+### Automatic Generation
+
+Run `/INITIALIZE_STARTER_KIT` to:
+1. Analyze your existing project files
+2. Identify your domain (healthcare, fintech, e-commerce, etc.)
+3. Propose custom personas relevant to your domain
+4. Generate the complete package (commands, skills, orchestrator)
+
+### Domain-to-Persona Suggestions
+
+When you initialize, the system suggests personas based on your domain:
+
+| Domain | Suggested Personas |
+|--------|-------------------|
+| **Healthcare** | Compliance Officer, Clinical Advisor, Patient Advocate, Data Privacy |
+| **Fintech** | Risk Analyst, Compliance Officer, Security Auditor, Fraud Specialist |
+| **E-commerce** | Customer Experience, Inventory Specialist, Payment Security, Fulfillment |
+| **SaaS B2B** | Customer Success, Enterprise Sales, Integration Architect, Onboarding |
+| **Gaming** | Player Experience, Monetization Analyst, Community Manager, QA Lead |
+| **EdTech** | Curriculum Designer, Accessibility Expert, Learning Scientist, Student Advocate |
+| **DevTools** | Developer Experience, API Designer, Documentation, Performance |
+| **IoT** | Hardware Integration, Security, Reliability, Power Management |
+
+### Generated Files
+
+For each custom package, the system creates:
+
+```
+.claude/
+├── commands/
+│   ├── personas/{domain}/
+│   │   ├── {persona1}.md
+│   │   ├── {persona2}.md
+│   │   └── ...
+│   └── review-{domain}-decision.md
+├── skills/
+│   └── personas/{domain}/
+│       ├── {persona1}.persona.md
+│       ├── {persona2}.persona.md
+│       └── ...
+└── templates/
+    └── {domain}/
+        └── {artifact}.template.md
+```
+
+### Example: E-commerce Package
+
+After initialization for an e-commerce project:
+
+```
+# Individual personas
+/personas/ecommerce:inventory-specialist
+/personas/ecommerce:payment-security
+/personas/ecommerce:customer-experience
+
+# Full review
+/review-ecommerce-decision Should we implement real-time inventory sync?
+```
+
+---
+
+## Creating New Packages Manually
+
+For detailed guidance on creating new persona packages manually, see [PERSONA-PACKAGES.md](PERSONA-PACKAGES.md).
 
 ### Quick Summary
 
@@ -740,16 +801,26 @@ For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md
 
 ## File Reference
 
+### Core Package
+
+**Commands:**
+- `.claude/commands/personas/core/skeptic.md`
+- `.claude/commands/personas/core/anthropic-expert.md`
+
+**Skills:**
+- `.claude/skills/personas/core/skeptic.persona.md`
+- `.claude/skills/personas/core/anthropic-expert.persona.md`
+
+**Note:** Core personas do not have a dedicated orchestrator - they work across all domains.
+
 ### Product Package
 
 **Commands:**
-- `.claude/commands/personas/product/skeptic.md`
 - `.claude/commands/personas/product/architect.md`
 - `.claude/commands/personas/product/economist.md`
 - `.claude/commands/personas/product/pragmatist.md`
 
 **Skills:**
-- `.claude/skills/personas/product/skeptic.persona.md`
 - `.claude/skills/personas/product/architect.persona.md`
 - `.claude/skills/personas/product/economist.persona.md`
 - `.claude/skills/personas/product/pragmatist.persona.md`
@@ -757,17 +828,17 @@ For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md
 **Orchestrator:**
 - `.claude/commands/review-product-decision.md`
 
+**Note:** Uses Core Skeptic (`/personas/core:skeptic`) for verification.
+
 ### Research Package
 
 **Commands:**
-- `.claude/commands/personas/research/skeptic.md`
 - `.claude/commands/personas/research/librarian.md`
 - `.claude/commands/personas/research/methodologist.md`
 - `.claude/commands/personas/research/critic.md`
 - `.claude/commands/personas/research/synthesizer.md`
 
 **Skills:**
-- `.claude/skills/personas/research/skeptic.persona.md`
 - `.claude/skills/personas/research/librarian.persona.md`
 - `.claude/skills/personas/research/methodologist.persona.md`
 - `.claude/skills/personas/research/critic.persona.md`
@@ -776,10 +847,11 @@ For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md
 **Orchestrator:**
 - `.claude/commands/review-research.md`
 
+**Note:** Uses Core Skeptic (`/personas/core:skeptic`) for verification.
+
 ### Advisory Package
 
 **Commands:**
-- `.claude/commands/personas/advisory/skeptic.md`
 - `.claude/commands/personas/advisory/cfo.md`
 - `.claude/commands/personas/advisory/go-to-market.md`
 - `.claude/commands/personas/advisory/strategist.md`
@@ -788,7 +860,6 @@ For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md
 - `.claude/commands/personas/advisory/counsel.md`
 
 **Skills:**
-- `.claude/skills/personas/advisory/skeptic.persona.md`
 - `.claude/skills/personas/advisory/cfo.persona.md`
 - `.claude/skills/personas/advisory/go-to-market.persona.md`
 - `.claude/skills/personas/advisory/strategist.persona.md`
@@ -798,6 +869,8 @@ For detailed guidance on creating new persona packages, see [PERSONA-PACKAGES.md
 
 **Orchestrator:**
 - `.claude/commands/review-business-decision.md`
+
+**Note:** Uses Core Skeptic (`/personas/core:skeptic`) for verification.
 
 ---
 

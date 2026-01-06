@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:operations Can our team of 5 handle this new product line?
+/personas/advisory:operations What's the risk of losing our only DevOps engineer?
+/personas/advisory:operations Do we need to hire before or after the product launch?
+```
+
 ## Quick Mode
 
 For simple operational evaluations, skip to **Execution Feasibility** + **Recommendation** only.

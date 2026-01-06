@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:strategist Should we pivot to B2B or stay B2C?
+/personas/advisory:strategist Evaluate this partnership opportunity with [Company]
+/personas/advisory:strategist What's our defensible moat in this market?
+```
+
 ## Quick Mode
 
 For simple strategic evaluations, skip to **Strategic Fit** + **Recommendation** only.

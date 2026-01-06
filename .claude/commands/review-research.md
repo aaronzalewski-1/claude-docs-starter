@@ -10,10 +10,20 @@ Evaluate research questions and findings through five specialized personas, each
 ## Command Format
 
 ```
-/review-research <research question, claim, or sources to evaluate>
+/review-research <research question, claim, or sources to evaluate> [--save <name>]
 ```
 
+**Arguments:**
+- `question`: The research question, claim, or sources to evaluate
+- `--save <name>`: (Optional) Save the analysis as a Literature Review to `docs/decisions/research/`
+
 Also triggers on natural language requests to review, evaluate, or synthesize research.
+
+**Examples:**
+```
+/review-research Does intermittent fasting improve cognitive function?
+/review-research Evaluate the evidence for remote work productivity --save remote-work-research
+```
 
 ## Package: Research
 
@@ -37,7 +47,7 @@ Each persona has:
 
 For the research question provided, run each persona analysis **in sequence**:
 
-1. **Skeptic Analysis** (`/personas/research:skeptic`)
+1. **Skeptic Analysis** (`/personas/core:skeptic`)
    - Verify citations support claims
    - Check data integrity
    - Detect misrepresentation patterns
@@ -64,7 +74,16 @@ For the research question provided, run each persona analysis **in sequence**:
 
 ### Phase 2: Synthesize Consensus
 
-After all personas have analyzed, produce a weighted synthesis.
+After all personas have analyzed, reason through before producing the synthesis:
+
+**Pre-Synthesis Reasoning (think through these):**
+1. Which claims were verified across multiple personas?
+2. Where do confidence scores diverge most significantly?
+3. Did the Skeptic find citation issues that affect Synthesizer's conclusions?
+4. Are there methodological concerns that undermine the findings?
+5. What evidence would change each persona's assessment?
+
+Then produce a weighted synthesis.
 
 ## Output Format
 
@@ -142,13 +161,40 @@ Default weights vary by research phase. Adjust based on your context:
 | **Claim Evaluation** | **0.28** | 0.15 | 0.20 | **0.25** | 0.12 |
 | **Knowledge Integration** | 0.12 | 0.13 | 0.15 | 0.18 | **0.42** |
 
-**Source Discovery**: Librarian dominates - finding good sources is the priority.
+### Weighting Rationale
 
-**Quality Assessment**: Methodologist dominates - rigor is the focus.
+**Source Discovery** (finding what's out there):
+- **Librarian dominates (0.35)** - Finding authoritative sources is the primary task.
+- **Synthesizer high (0.30)** - Need to see patterns to know what's missing.
+- Skeptic/Methodologist low - Rigor matters less during initial discovery.
 
-**Claim Evaluation**: Skeptic and Critic co-dominate - verifying and challenging claims is key.
+**Quality Assessment** (evaluating what you found):
+- **Methodologist dominates (0.32)** - Study design and validity are the focus.
+- Skeptic/Critic moderate (0.18) - Verification and challenge support quality assessment.
+- Synthesizer low (0.12) - Integration comes later.
 
-**Knowledge Integration**: Synthesizer dominates - building understanding is the goal.
+**Claim Evaluation** (testing specific claims):
+- **Skeptic high (0.28)** - Verifying claims against evidence is primary.
+- **Critic high (0.25)** - Challenging claims and finding counterarguments.
+- Librarian moderate (0.15) - Source quality still matters.
+
+**Knowledge Integration** (building understanding):
+- **Synthesizer dominates (0.42)** - Connecting patterns is the goal.
+- Critic moderate (0.18) - Keep challenging even during integration.
+- Others low - Foundation work is done.
+
+### Example Calculation
+
+For a **Claim Evaluation** task:
+```
+Skeptic:       0.85 confidence × 0.28 weight = 0.24
+Librarian:     0.90 confidence × 0.15 weight = 0.14
+Methodologist: 0.70 confidence × 0.20 weight = 0.14
+Critic:        0.75 confidence × 0.25 weight = 0.19
+Synthesizer:   0.80 confidence × 0.12 weight = 0.10
+                                ────────────────────
+Weighted Average:                          0.81
+```
 
 ## When Personas Disagree
 
@@ -176,7 +222,7 @@ Each persona provides a confidence score:
 You can invoke personas individually for focused analysis:
 
 ```
-/personas/research:skeptic Verify the citations in this paper support its claims
+/personas/core:skeptic Verify the citations in this paper support its claims
 /personas/research:librarian Evaluate these sources on climate change
 /personas/research:methodologist Assess this study's methodology
 /personas/research:critic Challenge this hypothesis
@@ -205,6 +251,23 @@ Then synthesizes weighted consensus with recommendation.
 | **Product** | `/review-product-decision` | Implementation decisions, architecture |
 | **Research** | `/review-research` | Research questions, literature analysis |
 
+## If Analysis Cannot Proceed
+
+If the review cannot be completed due to insufficient information:
+
+1. **Identify which personas are blocked** - Which analyses cannot proceed?
+2. **State what's missing** - Sources not accessible? Methodology unclear?
+3. **Provide partial analysis** - Complete what CAN be done
+4. **Set confidence to reflect gaps** - Flag incomplete areas
+5. **Recommend investigation path** - How to get the missing information
+
+**Example:**
+> **Blocked:** Methodologist cannot assess - original study behind paywall
+> **Partial analysis available:** Librarian found secondary sources; Critic can work from abstract
+> **Recommendation:** Access original study through institution or request from authors
+
+---
+
 ## Next Steps
 
 After consensus, offer relevant follow-up options:
@@ -216,3 +279,60 @@ After consensus, offer relevant follow-up options:
 | Methodological concerns | Study design recommendations |
 | Claims need testing | Additional critique approaches |
 | Ready to integrate | Synthesis frameworks |
+
+---
+
+## Saving as Literature Review (--save option)
+
+When `--save <name>` is provided, generate a Literature Review document after the analysis.
+
+### Step 1: Generate Literature Review Content
+
+After completing the weighted consensus, transform the analysis into literature review format:
+
+| Analysis Section | Literature Review Section |
+|------------------|--------------------------|
+| Consensus synthesis | Executive Summary |
+| Source evaluations | Sources Evaluated |
+| Methodologist findings | Methodology Assessment |
+| Skeptic analysis | Claim Verification |
+| Synthesizer themes | Themes and Patterns |
+| Key limitations | Gaps and Limitations |
+| Recommendation | Recommendations |
+
+### Step 2: Create Literature Review File
+
+Save to: `docs/decisions/research/YYYY-MM-DD-<name>/README.md`
+
+Use template from `.claude/templates/research/literature-review.template.md`
+
+### Step 3: Report Save Location
+
+After saving, append to output:
+
+```markdown
+---
+
+## Literature Review Saved
+
+**File:** `docs/decisions/research/YYYY-MM-DD-<name>/README.md`
+
+**Convert to other formats:**
+```bash
+cd docs/decisions/research/YYYY-MM-DD-<name>
+pandoc README.md -o review.pdf    # PDF
+pandoc README.md -o review.docx   # Word
+```
+
+**Track in git:**
+```bash
+git add docs/decisions/research/YYYY-MM-DD-<name>/
+git commit -m "Literature Review: <name>"
+```
+```
+
+### Naming Guidelines
+
+- Use kebab-case: `intermittent-fasting`, `remote-work-productivity`
+- Be descriptive but concise
+- Date prefix added automatically

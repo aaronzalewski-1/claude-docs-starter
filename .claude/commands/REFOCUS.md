@@ -2,9 +2,16 @@
 
 **STOP.** Take a step back from the current debugging approach.
 
+## Before Refocusing
+
+Summarize your current state in 2-3 bullets:
+- **Goal**: What were you trying to accomplish?
+- **Attempts**: What approaches have you tried so far?
+- **Blockers**: Why do you think they didn't work?
+
 ## Immediate Actions
 
-1. **Enter Plan Mode**: Use `EnterPlanMode` to reset context and think systematically
+1. **Pause and Reset Context**: Clear your mental state. The previous approach wasn't working - commit to trying something different.
 
 2. **State the Problem Clearly**: In 1-2 sentences, what is the actual error or unexpected behavior? Not symptoms, but the core issue.
 
@@ -42,3 +49,23 @@ After reviewing, present:
 2. **Root Cause Hypothesis**: Based on evidence, not guessing
 3. **Proposed Approach**: Simple, focused next step
 4. **Validation Method**: How we'll know if it works
+
+## When to Escalate
+
+If after following this protocol you still cannot identify the root cause:
+
+1. **Present your findings clearly**:
+   - What you've verified works
+   - What you've ruled out
+   - Where the uncertainty remains
+
+2. **Ask the user for help**:
+   - Request additional context about the system
+   - Ask if there are environment-specific factors you're missing
+   - Suggest they check logs, monitoring, or other diagnostic tools you can't access
+
+3. **Propose a minimal reproduction**:
+   - Suggest creating a smaller test case that isolates the issue
+   - Ask the user to verify behavior in their environment
+
+**It's better to acknowledge uncertainty than to continue guessing.**

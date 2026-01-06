@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:go-to-market Should we price per seat or per usage?
+/personas/advisory:go-to-market Evaluate our ICP: mid-market SaaS companies
+/personas/advisory:go-to-market Is product-led growth right for our enterprise product?
+```
+
 ## Quick Mode
 
 For simple GTM evaluations, skip to **Revenue Impact** + **Recommendation** only.

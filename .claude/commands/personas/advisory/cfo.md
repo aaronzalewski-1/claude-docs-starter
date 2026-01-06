@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:cfo Should we hire 3 engineers now or wait until Series A?
+/personas/advisory:cfo Evaluate the financial impact of switching from AWS to GCP
+/personas/advisory:cfo What's our runway if we increase burn by $50k/month for growth?
+```
+
 ## Quick Mode
 
 For simple financial evaluations, skip to **Financial Impact** + **Recommendation** only.

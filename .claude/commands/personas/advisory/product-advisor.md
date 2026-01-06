@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/advisory:product-advisor Should we prioritize mobile app or API integrations?
+/personas/advisory:product-advisor Is low NPS a product-market fit problem or UX problem?
+/personas/advisory:product-advisor Evaluate this feature request from our largest customer
+```
+
 ## Quick Mode
 
 For simple product evaluations, skip to **Product Fit** + **Recommendation** only.

@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/product:economist Build vs buy analysis for authentication - Auth0 vs custom
+/personas/product:economist What's the true cost of migrating from PostgreSQL to MongoDB?
+/personas/product:economist Compare the TCO of Kubernetes vs serverless for our API
+```
+
 ## Quick Mode
 
 For simple decisions, skip to **Cost Comparison** + **Hidden Costs** only.

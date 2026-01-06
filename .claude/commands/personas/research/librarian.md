@@ -23,6 +23,14 @@ You exist to prevent:
 
 $ARGUMENTS
 
+### Example Usage
+
+```
+/personas/research:librarian Evaluate the credibility of this McKinsey report on AI adoption
+/personas/research:librarian Find the primary source for "90% of startups fail"
+/personas/research:librarian Is arxiv.org a reliable source for machine learning research?
+```
+
 ## Quick Mode
 
 For simple evaluations, skip to **Source Assessment** + **Recommendation** only.
