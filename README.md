@@ -6,16 +6,17 @@
 
 > **Multi-perspective analysis and weighted consensus for Claude Code**
 
-A framework for structured decision-making with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), featuring 15 specialized personas, weighted consensus synthesis, and formal document generation.
+A framework for structured decision-making with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), featuring 15 specialized personas, weighted consensus synthesis, formal document generation, context management, and living documentation.
 
 ## What This Does
 
-Transform how you make decisions with Claude Code:
+Transform how you work with Claude Code:
 
-- **4 persona packages** covering product development, research, business advisory, and core verification
-- **15 specialized personas** that analyze from distinct perspectives
-- **Weighted consensus** that synthesizes multiple viewpoints based on context
+- **15 specialized personas** across 4 packages that analyze from distinct perspectives
+- **Weighted consensus** that synthesizes viewpoints based on project phase and context
 - **Formal artifacts** (ADRs, Literature Reviews, Board Memos) generated automatically
+- **Context management** that keeps Claude focused across complex, multi-session work
+- **Living documentation** designed to evolve and accumulate institutional knowledge
 
 ## Quick Example
 
@@ -90,31 +91,77 @@ Invoke any persona directly for focused analysis:
 /personas/research:librarian Evaluate these sources on climate change
 ```
 
-### Context-Aware Documentation
+### Context and Focus Management
 
-XML-style triggers in `CLAUDE.md` load relevant documentation automatically:
+XML-style triggers in `CLAUDE.md` automatically load relevant documentation based on what you're working on:
 
 ```xml
 <load_database_context>
 When: Modifying database schema, entities, or migrations
+Triggers: schema, migration, entity, DbContext
 Required Reading: ARCHITECTURE.md, existing entity patterns
 </load_database_context>
 
-<load_decision_review_context>
-When: Evaluating architectural choices or technology selections
-Required Action: Use /review-product-decision for multi-persona analysis
-</load_decision_review_context>
+<load_debugging_context>
+When: Investigating failures, unexpected behavior
+Triggers: error, failure, bug, broken, not working
+Required Reading: DEVELOPMENT.md debugging checklist
+</load_debugging_context>
 ```
 
-### Workflow Commands
+When you say "add a migration," the database context loads. When you say "the build is broken," the debugging context loads. Claude reads what it needs before acting.
 
-| Command | Purpose |
-|---------|---------|
-| `/INITIALIZE_STARTER_KIT` | Guided first-time setup |
-| `/DEEPPLAN` | Structured implementation planning |
-| `/REFOCUS` | Debug reset protocol when stuck |
-| `/NEXTSTEPS` | Sprint planning assistant |
-| `/list-personas` | Discover available personas |
+**Workflow commands** handle common challenges:
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/INITIALIZE_STARTER_KIT` | 8-phase guided setup | First-time installation |
+| `/DEEPPLAN` | Structured implementation planning | Multi-step features needing phased execution |
+| `/REFOCUS` | Debug reset protocol | When stuck or going in circles |
+| `/NEXTSTEPS` | Sprint planning assistant | Planning what to work on next |
+| `/codebase-context` | Quick project summary | Session start orientation |
+| `/list-personas` | Discover available personas | Finding the right perspective |
+
+`/REFOCUS` is particularly valuable—when debugging spirals or Claude keeps suggesting failed approaches, it forces a structured reset: What was the original objective? What approaches failed? What assumptions need questioning?
+
+### Living Documentation
+
+The framework is designed around documents that evolve, not static templates that rot.
+
+**Lessons learned accumulate** in `DEVELOPMENT.md`:
+
+```markdown
+**Case Study: Migration Created But Not Applied**
+
+**The Mistake:** Created migration file, committed with message implying
+table existed, but never applied the migration.
+
+**General Principles Derived:**
+1. Migration Creation ≠ Migration Application
+2. Verify database state, not just build state
+```
+
+Each mistake becomes guidance that persists beyond individual sessions.
+
+**Documentation stays current** through focused files:
+
+| Document | What Evolves |
+|----------|--------------|
+| `DEVELOPMENT.md` | Coding patterns, debugging checklists, lessons learned |
+| `ARCHITECTURE.md` | System design, schema, domain model |
+| `CHANGELOG.md` | Version history, migration notes |
+| `IMPROVEMENTS.md` | Improvement proposals, implementation status |
+
+**Locked decisions** prevent re-litigation of settled architectural choices:
+
+```markdown
+## Locked Architectural Decisions
+
+### 1. Single-Tenant Deployment Model
+Do NOT recommend: multi-tenant designs, tenant selection APIs
+```
+
+Claude respects these boundaries while remaining flexible on living decisions.
 
 ## Documentation Structure
 
@@ -129,16 +176,19 @@ your-project/
 │   │   │   ├── research/        # Librarian, Methodologist, Critic, Synthesizer
 │   │   │   └── advisory/        # CFO, GTM, Strategist, Ops, Product, Counsel
 │   │   ├── review-*.md          # Package orchestrators
-│   │   └── *.md                 # Workflow commands
+│   │   └── *.md                 # Workflow commands (DEEPPLAN, REFOCUS, etc.)
 │   ├── skills/                  # Domain expertise backing personas
 │   │   └── personas/            # Knowledge bases for each persona
 │   └── templates/               # Artifact document templates
 └── docs/
-    ├── CLAUDE/                  # Project documentation
-    │   ├── DEVELOPMENT.md       # Operational guidelines
-    │   ├── ARCHITECTURE.md      # System design
+    ├── CLAUDE/                  # Project documentation (living documents)
+    │   ├── DEVELOPMENT.md       # Operational guidelines + lessons learned
+    │   ├── ARCHITECTURE.md      # System design, schema, domain model
+    │   ├── CHANGELOG.md         # Version history
+    │   ├── IMPROVEMENTS.md      # Improvement proposals
     │   ├── PERSONAS.md          # Complete persona reference
-    │   └── PERSONA-PACKAGES.md  # Creating custom packages
+    │   ├── PERSONA-PACKAGES.md  # Creating custom packages
+    │   └── SESSION-STATE.json   # Multi-session work tracking
     └── decisions/               # Generated artifacts
         ├── product/             # ADRs
         ├── research/            # Literature reviews
@@ -187,6 +237,9 @@ See [PERSONA-PACKAGES.md](docs/CLAUDE/PERSONA-PACKAGES.md) for step-by-step guid
 3. **Use individual personas for quick consultations** - Full reviews aren't always needed
 4. **Export artifacts for decisions that matter** - Creates institutional memory
 5. **Customize weights for your phase** - Pre-validation projects weight Pragmatist higher; scale-ready projects weight Architect higher
+6. **Capture lessons learned** - When something goes wrong, add a case study to DEVELOPMENT.md
+7. **Use `/REFOCUS` when stuck** - Don't let debugging sessions spiral; reset systematically
+8. **Keep documentation current** - The framework works best when docs evolve with your project
 
 ## Contributing
 
