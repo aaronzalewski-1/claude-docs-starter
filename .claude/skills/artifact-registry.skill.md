@@ -156,6 +156,32 @@ Generated markdown can be converted to other formats:
 
 ---
 
+### Core Package
+
+#### Reasoning Entry
+
+| Property | Value |
+|----------|-------|
+| **Command** | `/capture-reasoning <decision>` or implicit capture |
+| **Format** | JSON |
+| **Storage** | `docs/reasoning/YYYY-MM-DD-reasoning-log.json` |
+
+**No Template** - Uses inline schema defined in `reasoning-capture.skill.md`
+
+**Purpose:** Captures informal decision reasoning that formal artifacts miss:
+- Intermediate reasoning and chain of thought
+- Rejected alternatives with rationale
+- Assumptions (validated and unvalidated)
+- Evidence and sources
+- Dependencies on prior decisions
+
+**Relationship to Formal Artifacts:**
+- Reasoning entries capture the "messy middle"
+- Formal ADRs/Memos capture final decisions
+- Reasoning entries can link to formal artifacts via `linkedArtifacts.adr`
+
+---
+
 ## Future Artifacts (Post-MVP)
 
 | Package | Artifact | Priority | Description |

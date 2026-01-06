@@ -56,7 +56,8 @@
         "decision": "What was decided",
         "rationale": "Why it was decided",
         "date": "YYYY-MM-DDTHH:MM:SSZ",
-        "alternatives": ["Rejected alternatives for context"]
+        "alternatives": ["Rejected alternatives for context"],
+        "reasoningEntryId": "Optional: ID linking to docs/reasoning/ entry for full details"
       }
     ],
     "openQuestions": [
@@ -102,6 +103,15 @@
     "hypothesesTested": [],
     "rootCauseIdentified": null,
     "evidenceGathered": []
+  },
+
+  "reasoningContext": {
+    "_comment": "Tracks decision reasoning capture during this session",
+    "dailyLogFile": "docs/reasoning/YYYY-MM-DD-reasoning-log.json",
+    "capturedDecisions": 0,
+    "unvalidatedAssumptions": [],
+    "pendingRevisitTriggers": [],
+    "recentEntryIds": []
   },
 
   "notes": "Free-form notes about the current state"

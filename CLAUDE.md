@@ -238,6 +238,31 @@ Use `/review-product-decision <decision>` to run multi-persona analysis, or invo
 **Why:** Ensures artifacts are saved correctly with proper naming conventions and folder structure.
 </load_artifact_context>
 
+<load_reasoning_context>
+**When:** Starting a new session on complex work, reviewing past decisions, understanding decision history.
+**Triggers:** session recovery, why did we, decision history, reasoning review, past decisions, what assumptions
+
+**Example phrases that trigger this context:**
+- "Why did we decide to use X?"
+- "What assumptions did we make about Y?"
+- "Show me the decision history for authentication"
+- "What were the alternatives we considered?"
+
+**Required Reading:**
+1. [docs/reasoning/README.md](docs/reasoning/README.md) - Reasoning capture system overview
+2. [docs/reasoning/index.json](docs/reasoning/index.json) - Decision index for fast lookup
+3. Recent entries in `docs/reasoning/YYYY-MM-DD-reasoning-log.json`
+
+**Required Action:**
+Use reasoning commands for decision intelligence:
+- `/query-decisions <question>` - Natural language search of past decisions
+- `/visualize-decisions` - Generate process/roles/events diagrams
+- `/reconsider-decision` - Re-evaluate a past decision in sandbox
+- `/analyze-impact` - Understand ripple effects before changes
+
+**Why:** Reasoning capture provides context that formal documents miss - the "why" behind incremental decisions.
+</load_reasoning_context>
+
 <!-- Add more context triggers as needed for your domain -->
 
 ---
@@ -373,6 +398,58 @@ Do not hard-code values that only work for specific test inputs.
 Focus on understanding requirements and implementing correct algorithms.
 If tests are incorrect, inform the user rather than working around them.
 </avoid_hardcoding>
+
+---
+
+## Decision Reasoning Capture
+
+<reasoning_capture_directive>
+**Implicit Reasoning Capture**
+
+At the following milestones, capture decision reasoning to `docs/reasoning/`:
+
+### After Persona Analyses
+After completing any `/review-*-decision` command or individual persona analysis:
+1. Extract key decision points from the analysis
+2. Capture alternatives considered (from persona debates)
+3. Record the consensus recommendation and confidence
+4. Note unresolved tensions or assumptions
+5. Write entry with `trigger.type = "persona_completion"`
+
+### Before Commits
+Before executing a git commit during implementation work:
+1. Briefly capture what decision led to this change
+2. Note any alternatives that were considered
+3. Record assumptions that influenced the approach
+4. Use `--depth light` for routine commits
+
+### At Plan Approval
+When a user approves a DEEPPLAN phase or implementation plan:
+1. Capture the approved approach
+2. Document why this approach over alternatives
+3. Record scope decisions (what was deferred)
+4. Write entry with `trigger.type = "plan_approval"`
+
+### At Significant Decision Points
+When making architectural or implementation choices that involve tradeoffs:
+1. Recognize decision-making language ("Let's go with...", "I recommend...")
+2. Capture the decision, rationale, and alternatives
+3. Note assumptions and accepted tradeoffs
+4. **Always ask about dependencies** on prior decisions
+
+### Index Maintenance
+After each capture:
+1. Update `docs/reasoning/index.json` with new entry
+2. Add to appropriate `byTopic` arrays
+3. Update `dependencyGraph` if dependencies exist
+4. Increment `totalEntries`
+
+### When NOT to Capture
+- Trivial implementation details (variable names, formatting)
+- Decisions already captured in formal ADRs (avoid duplication)
+- User explicitly declines capture ("skip reasoning capture")
+- Pure information gathering (no decision made)
+</reasoning_capture_directive>
 
 ---
 
