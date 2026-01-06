@@ -53,6 +53,49 @@ Each orchestrator runs the Core Skeptic plus domain-specific personas, then synt
 
 **Manual setup:** Copy `CLAUDE.md`, `docs/CLAUDE/`, and `.claude/` to your project root, then replace `{{PLACEHOLDER}}` markers.
 
+## Platform Setup
+
+**Prerequisites:** Python 3.8+ (for hooks)
+
+### First-Time Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd <project-name>
+   ```
+
+2. **Create environment configuration** (required for hooks)
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Edit `.env`** with your project path:
+   ```bash
+   # Use forward slashes on all platforms
+   CLAUDE_PROJECT_DIR=C:/Users/yourname/projects/your-project
+   ```
+
+4. **Create local settings** (optional, for custom hooks)
+   ```bash
+   cp .claude/settings.local.json.example .claude/settings.local.json
+   ```
+
+5. **Run initialization**
+   ```
+   /INITIALIZE_STARTER_KIT
+   ```
+
+### Platform Notes
+
+| Platform | Python Command | Notes |
+|----------|---------------|-------|
+| **Windows** | `python` | Use forward slashes in paths |
+| **macOS** | `python3` | Set `CLAUDE_PYTHON_PATH=python3` in .env |
+| **Linux** | `python3` | Set `CLAUDE_PYTHON_PATH=python3` in .env |
+
+See [DEVELOPMENT.md](docs/CLAUDE/DEVELOPMENT.md#cross-platform-compatibility) for detailed cross-platform guidance.
+
 ## Key Features
 
 ### Multi-Persona Decision Analysis

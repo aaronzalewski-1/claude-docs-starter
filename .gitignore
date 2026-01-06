@@ -7,6 +7,12 @@ docs/blog-*.md
 # Local Claude Code settings (user-specific permissions)
 .claude/settings.local.json
 
+# Environment files (user-specific configuration)
+.env
+.env.local
+.env.*.local
+!.env.example
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -17,3 +23,6 @@ Thumbs.db
 *.swp
 *.swo
 NUL
+.claude/settings.local.json.example
+docs/PLAN-*.md
+.claude/hooks/exit-plan-gate.py

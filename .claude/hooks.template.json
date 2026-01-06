@@ -1,7 +1,8 @@
 {
   "_comment": "Claude Code hooks - run commands before/after tool calls",
   "_docs": "https://docs.anthropic.com/en/docs/claude-code/hooks",
-  "_usage": "Copy relevant sections to your settings.json or settings.local.json",
+  "_usage": "Copy relevant sections to your settings.local.json",
+  "_portability": "Always use relative paths from project root, never absolute paths",
 
   "hooks": {
     "_comment": "=== EXAMPLES - Uncomment and customize what you need ===",
@@ -35,11 +36,40 @@
       "description": "Format Python files with Black"
     },
 
-    "_comment_5": "--- Notification on completion ---",
-    "_post:Task": {
-      "_comment": "Notify when a long task completes (macOS example)",
+    "_comment_5": "--- Plan Gate Hook (cross-platform) ---",
+    "_plan_gate": {
+      "matcher": "ExitPlanMode",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python ./.claude/hooks/exit-plan-gate.py",
+          "description": "Enforce plan review before exiting plan mode"
+        }
+      ]
+    }
+  },
+
+  "_notification_examples": {
+    "_comment": "Platform-specific notification commands",
+
+    "_cross_platform_recommended": {
+      "command": "python ./.claude/hooks/notify.py \"Task completed\"",
+      "description": "Cross-platform notification using Python (recommended)"
+    },
+
+    "_macos": {
       "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\"'",
-      "description": "Desktop notification on task completion"
+      "description": "macOS notification via AppleScript"
+    },
+
+    "_linux": {
+      "command": "notify-send 'Claude Code' 'Task completed'",
+      "description": "Linux notification via notify-send (requires libnotify)"
+    },
+
+    "_windows_powershell": {
+      "command": "powershell -NoProfile -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Task completed','Claude Code')\"",
+      "description": "Windows notification via PowerShell MessageBox"
     }
   },
 
@@ -57,5 +87,13 @@
     "{{file_path}}": "Path of the file being written/edited",
     "{{tool_name}}": "Name of the tool being executed",
     "{{exit_code}}": "Exit code of the previous command (post hooks only)"
+  },
+
+  "_portability_guide": {
+    "_paths": "Always use relative paths from project root (e.g., ./.claude/hooks/script.py)",
+    "_python": "Use 'python' not 'python3' - Windows doesn't have python3 alias by default",
+    "_shell_commands": "Avoid shell-specific syntax; use Python scripts for complex logic",
+    "_env_vars": "Configure via .env file, not inline environment variables",
+    "_forward_slashes": "Use forward slashes in paths even on Windows (works in Python and most tools)"
   }
 }

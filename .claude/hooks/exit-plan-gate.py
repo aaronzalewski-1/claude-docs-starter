@@ -3,22 +3,34 @@
 PreToolUse hook for ExitPlanMode - enforces two-step plan approval workflow.
 
 First call: Blocks and reminds Claude to present a plan summary.
-Second call (within 5 min): Allows the tool to proceed.
+Second call (within timeout): Allows the tool to proceed.
 
 This ensures users can review the plan before the approval modal appears.
+
+Environment variables (via .env):
+    CLAUDE_HOOK_PLAN_GATE_TIMEOUT: Timeout in seconds (default: 300)
+    CLAUDE_HOOK_DEBUG: Enable debug output (default: false)
 """
 
 import json
-import os
 import sys
 import time
+from pathlib import Path
 
-# State file to track if reminder was shown (use temp directory for cross-platform)
-STATE_FILE = os.path.join(os.environ.get('TEMP', '/tmp'), 'claude-plan-reminder-shown')
-REMINDER_TIMEOUT_SECONDS = 300  # 5 minutes
+# Import cross-platform utilities
+# This also auto-loads .env file
+from utils import get_temp_dir, get_hook_timeout, debug_log
+
+# State file to track if reminder was shown (cross-platform temp directory)
+STATE_FILE = get_temp_dir() / 'claude-plan-reminder-shown'
+REMINDER_TIMEOUT_SECONDS = get_hook_timeout(default=300)
 
 
 def main():
+    debug_log(f"Plan gate hook triggered")
+    debug_log(f"State file: {STATE_FILE}")
+    debug_log(f"Timeout: {REMINDER_TIMEOUT_SECONDS} seconds")
+
     # Read tool input from stdin
     try:
         input_data = json.load(sys.stdin)
@@ -27,26 +39,35 @@ def main():
         sys.exit(1)
 
     tool_name = input_data.get("tool_name", "")
+    debug_log(f"Tool name: {tool_name}")
 
     # Only act on ExitPlanMode tool
     if tool_name != "ExitPlanMode":
+        debug_log("Not ExitPlanMode, allowing")
         sys.exit(0)  # Allow other tools to proceed
 
     # Check if reminder was recently shown
-    if os.path.exists(STATE_FILE):
+    if STATE_FILE.exists():
         try:
-            mtime = os.path.getmtime(STATE_FILE)
-            if time.time() - mtime < REMINDER_TIMEOUT_SECONDS:
+            mtime = STATE_FILE.stat().st_mtime
+            elapsed = time.time() - mtime
+            debug_log(f"State file exists, age: {elapsed:.1f}s")
+
+            if elapsed < REMINDER_TIMEOUT_SECONDS:
                 # Reminder was shown recently - allow the call and reset state
-                os.remove(STATE_FILE)
+                STATE_FILE.unlink()
+                debug_log("Within timeout, allowing ExitPlanMode")
                 sys.exit(0)
-        except OSError:
+            else:
+                debug_log("State file expired, will show reminder again")
+        except OSError as e:
+            debug_log(f"Error checking state file: {e}")
             pass  # File may have been deleted, treat as first call
 
     # First call or stale state - block and show reminder
     try:
-        with open(STATE_FILE, 'w') as f:
-            f.write(str(time.time()))
+        STATE_FILE.write_text(str(time.time()))
+        debug_log("Created/updated state file, blocking exit")
     except OSError as e:
         print(f"Hook warning: Could not write state file: {e}", file=sys.stderr)
         # Continue anyway - worst case is reminder shows every time

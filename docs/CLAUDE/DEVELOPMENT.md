@@ -411,3 +411,73 @@ For complex or multi-session work:
 2. Check for in-progress work in `docs/CLAUDE/SESSION-STATE.json` if it exists
 3. Run build to verify baseline
 4. Load context-specific documentation based on task type
+
+---
+
+## Cross-Platform Compatibility
+
+This framework supports Windows, macOS, and Linux. Follow these guidelines for portable configurations.
+
+### Environment Setup
+
+The `.env` file is **required** for hooks to work. Create it from the template:
+
+```bash
+# Copy template to .env
+cp .env.example .env
+
+# Edit .env and set your project directory
+# Use forward slashes on all platforms
+CLAUDE_PROJECT_DIR=C:/Users/yourname/projects/your-project
+```
+
+**Required variables:**
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `CLAUDE_PROJECT_DIR` | Absolute path to project root | `C:/Users/name/project` |
+
+**Optional variables:**
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `CLAUDE_PYTHON_PATH` | Python interpreter | Auto-detected |
+| `CLAUDE_SHELL_TYPE` | Shell preference | Platform default |
+| `CLAUDE_TEMP_DIR` | Temp directory for state files | System temp |
+| `CLAUDE_HOOK_PLAN_GATE_TIMEOUT` | Plan gate timeout (seconds) | `300` |
+| `CLAUDE_HOOK_DEBUG` | Enable hook debug output | `false` |
+
+### Path Handling Rules
+
+| Do | Don't |
+|----|-------|
+| Use relative paths: `./.claude/hooks/script.py` | Use absolute paths: `C:\Users\name\project\.claude\hooks\script.py` |
+| Use forward slashes in JSON/configs | Use backslashes (even on Windows) |
+| Derive paths from `__file__` in Python | Hardcode project paths in scripts |
+
+### Settings Files
+
+| File | Purpose | In Git |
+|------|---------|--------|
+| `settings.template.json` | Patterns and examples | Yes |
+| `settings.local.json.example` | Portable example | Yes |
+| `settings.local.json` | Your actual settings | No |
+| `.env.example` | Environment template | Yes |
+| `.env` | Your environment config | No |
+
+### Platform-Specific Commands
+
+For hooks that must differ by platform, use Python wrapper scripts:
+
+```python
+# .claude/hooks/my-hook.py
+import platform
+import subprocess
+
+if platform.system() == 'Windows':
+    subprocess.run(['powershell', '-Command', 'your-command'])
+else:
+    subprocess.run(['bash', '-c', 'your-command'])
+```
+
+The framework includes `.claude/hooks/notify.py` as a cross-platform notification example.
